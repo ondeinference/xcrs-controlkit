@@ -1,0 +1,944 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0BF8E6E42A39CE747AD5ED5D /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		0DFC449880A304B5154D7F6D /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */; };
+		100DCE12F169B8A38E219931 /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
+		25622E0215D89F31880E6356 /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		3CAE36F48F2BB14EC17B1A49 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 39DF23C6EF63909919D192E1 /* NIOHTTP1 */; };
+		4D29102252109822A895B881 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = C9A26D0E7AB404E7BE27C778 /* NIOPosix */; };
+		57C6D92B45E7092A5C2AD7D2 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */; };
+		57E28C91935955E0FCA55C21 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EEBDB1A27DC2D28A6BB1B95 /* NIOCore */; };
+		5C1F1D551479D29CA351EEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E395E1A9D0B3259F9C816109 /* Assets.xcassets */; };
+		673EB3CCA913F73C710B72B0 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58494EA2BBD98AE84158250F /* NIOCore */; };
+		6D60E555ABB299495F608B27 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = 2B7D7F431DC211BEDBFC374A /* NIOPosix */; };
+		6F0CF3B6D51AEB5C4F3E1827 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 06ABEBF2BC26029BF199977C /* README.md */; };
+		7CAF0B42FF68BF36CAC8C8CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A09FB52496A952CB13C163B /* Assets.xcassets */; };
+		7D3C77F9ABF4E0CD672DCEF5 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 84A03CA7B1A8BF405AD3F3C4 /* NIOHTTP1 */; };
+		8F79A6E8A60191E7A095D2F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF0D230E8E7D8DF4E8AF86 /* README.md */; };
+		93235E8B38222B9CC779ED84 /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 50AB05BF2C324210174A3476 /* XCRSControlKit */; };
+		9540EFD6CC87D6DEF2FBFC0F /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
+		986705883AA98C348CFE6E72 /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 17A1603CDD0A79E07FAC7D43 /* XCRSControlKit */; };
+		9DFD228E556F05433F75A568 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = EE8C054B1BC0620402AEA51B /* NIOHTTP1 */; };
+		B2A57E383F93751851FE880C /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = F83D3AB07112BE3B5C5CEEB0 /* NIOCore */; };
+		B986DCE75E07965CA4C1E7F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D11F41B613A58B56653C16C6 /* README.md */; };
+		BEFE1733DCB97BE06F428AD2 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */; };
+		C0DC985C9D52F33FFB8943E8 /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
+		C552103B6652E1005DB6B8C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D9522A60419FFC7F405FE88 /* Assets.xcassets */; };
+		C8B2C54C0B06115DE7F14ACE /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */; };
+		D96F5E268D3AFF7DC328622A /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		E7D00D2B9B79391ABB28574C /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = FFAF906BB53F58598BDAE35B /* NIOPosix */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		154A64286F9DFB5C95CF695E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F5E3C368E274D9C0BF1AC09;
+			remoteInfo = "ControlKit-iOS";
+		};
+		30BC4151DCEA5E8BE24D8C93 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 720F3EC917A0116B593FBBBB;
+			remoteInfo = "ControlKit-visionOS";
+		};
+		AEE01B43669A92A0B635826C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 029C796A915A8119077A2F2D;
+			remoteInfo = "ControlKit-tvOS";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		06ABEBF2BC26029BF199977C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-tvOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-iOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1D9522A60419FFC7F405FE88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-visionOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		3DFF0D230E8E7D8DF4E8AF86 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-visionOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
+		898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
+		8A09FB52496A952CB13C163B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-tvOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRPCServer.swift; sourceTree = "<group>"; };
+		A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
+		D11F41B613A58B56653C16C6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		D1DCCDE3A93E1CF31802D658 /* xcrs-controlkit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcrs-controlkit"; path = ..; sourceTree = SOURCE_ROOT; };
+		D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerUITests.swift; sourceTree = "<group>"; };
+		E395E1A9D0B3259F9C816109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-iOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2A75581ED579005C72375AAB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0DFC449880A304B5154D7F6D /* XCRSControlKit in Frameworks */,
+				B2A57E383F93751851FE880C /* NIOCore in Frameworks */,
+				3CAE36F48F2BB14EC17B1A49 /* NIOHTTP1 in Frameworks */,
+				4D29102252109822A895B881 /* NIOPosix in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A2E874DC4FFAB2E95DCD1F03 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				986705883AA98C348CFE6E72 /* XCRSControlKit in Frameworks */,
+				57E28C91935955E0FCA55C21 /* NIOCore in Frameworks */,
+				7D3C77F9ABF4E0CD672DCEF5 /* NIOHTTP1 in Frameworks */,
+				6D60E555ABB299495F608B27 /* NIOPosix in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3E100C6F6D5156EFA83374F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				93235E8B38222B9CC779ED84 /* XCRSControlKit in Frameworks */,
+				673EB3CCA913F73C710B72B0 /* NIOCore in Frameworks */,
+				9DFD228E556F05433F75A568 /* NIOHTTP1 in Frameworks */,
+				E7D00D2B9B79391ABB28574C /* NIOPosix in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0AD16B636A496FC575FABB2F /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */,
+				D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		18CD92B06EDA4B61503FE8DA /* visionOS */ = {
+			isa = PBXGroup;
+			children = (
+				8A09FB52496A952CB13C163B /* Assets.xcassets */,
+				A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */,
+				06ABEBF2BC26029BF199977C /* README.md */,
+			);
+			path = visionOS;
+			sourceTree = "<group>";
+		};
+		2D1B85549DE31AFEDF5D1159 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */,
+				0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */,
+				904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */,
+				08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */,
+				5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */,
+				2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8BF319E1B3CB4CA319D804BA = {
+			isa = PBXGroup;
+			children = (
+				CEE9E165E43396ABDCF722E3 /* iOS */,
+				AAF9A6C2C031D435E78F618D /* Packages */,
+				0AD16B636A496FC575FABB2F /* Shared */,
+				F3830AB6FA85799037B91E7D /* tvOS */,
+				18CD92B06EDA4B61503FE8DA /* visionOS */,
+				2D1B85549DE31AFEDF5D1159 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AAF9A6C2C031D435E78F618D /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				D1DCCDE3A93E1CF31802D658 /* xcrs-controlkit */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		CEE9E165E43396ABDCF722E3 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				E395E1A9D0B3259F9C816109 /* Assets.xcassets */,
+				898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */,
+				D11F41B613A58B56653C16C6 /* README.md */,
+			);
+			path = iOS;
+			sourceTree = "<group>";
+		};
+		F3830AB6FA85799037B91E7D /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				1D9522A60419FFC7F405FE88 /* Assets.xcassets */,
+				5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */,
+				3DFF0D230E8E7D8DF4E8AF86 /* README.md */,
+			);
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		029C796A915A8119077A2F2D /* ControlKit-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F90CA1FF8DF178C6B4D2D56F /* Build configuration list for PBXNativeTarget "ControlKit-tvOS" */;
+			buildPhases = (
+				764FCDFA07EA6064FF3C21DE /* Sources */,
+				A88C8E544C02C1D56E86A9C7 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ControlKit-tvOS";
+			packageProductDependencies = (
+			);
+			productName = "ControlKit-tvOS";
+			productReference = 08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		09F6B446FD034D1BCF7FE56B /* ControlKit-visionOS-UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B47E47F03867048313ED0BC9 /* Build configuration list for PBXNativeTarget "ControlKit-visionOS-UITests" */;
+			buildPhases = (
+				5FC626904619877E61D287BC /* Sources */,
+				A2E874DC4FFAB2E95DCD1F03 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				55C3178DB2606813467C97CC /* PBXTargetDependency */,
+			);
+			name = "ControlKit-visionOS-UITests";
+			packageProductDependencies = (
+				17A1603CDD0A79E07FAC7D43 /* XCRSControlKit */,
+				1EEBDB1A27DC2D28A6BB1B95 /* NIOCore */,
+				84A03CA7B1A8BF405AD3F3C4 /* NIOHTTP1 */,
+				2B7D7F431DC211BEDBFC374A /* NIOPosix */,
+			);
+			productName = "ControlKit-visionOS-UITests";
+			productReference = 5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		720F3EC917A0116B593FBBBB /* ControlKit-visionOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A3E875F2C0588D2AFB728EC8 /* Build configuration list for PBXNativeTarget "ControlKit-visionOS" */;
+			buildPhases = (
+				25A5679D9AB0D84C081D9343 /* Sources */,
+				23790115E256D87FAB658E0B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ControlKit-visionOS";
+			packageProductDependencies = (
+			);
+			productName = "ControlKit-visionOS";
+			productReference = 2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		8B29B60E49F265583C3FB987 /* ControlKit-tvOS-UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC1656DA116F4F1E1E7A9039 /* Build configuration list for PBXNativeTarget "ControlKit-tvOS-UITests" */;
+			buildPhases = (
+				5132E84347A81C2E808C959B /* Sources */,
+				C3E100C6F6D5156EFA83374F /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F37FD1FE4F9670C2C355615F /* PBXTargetDependency */,
+			);
+			name = "ControlKit-tvOS-UITests";
+			packageProductDependencies = (
+				50AB05BF2C324210174A3476 /* XCRSControlKit */,
+				58494EA2BBD98AE84158250F /* NIOCore */,
+				EE8C054B1BC0620402AEA51B /* NIOHTTP1 */,
+				FFAF906BB53F58598BDAE35B /* NIOPosix */,
+			);
+			productName = "ControlKit-tvOS-UITests";
+			productReference = 904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		9F5E3C368E274D9C0BF1AC09 /* ControlKit-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 42681BF128073F8CD1146052 /* Build configuration list for PBXNativeTarget "ControlKit-iOS" */;
+			buildPhases = (
+				5AC070701AB330C954DC582E /* Sources */,
+				FE06AFC9AE7B730022308652 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ControlKit-iOS";
+			packageProductDependencies = (
+			);
+			productName = "ControlKit-iOS";
+			productReference = 0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CD73A40CAB68D297974A7E90 /* ControlKit-iOS-UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 83E3FC025793339356561648 /* Build configuration list for PBXNativeTarget "ControlKit-iOS-UITests" */;
+			buildPhases = (
+				47F2DEFAC8AF9B4172ECBF89 /* Sources */,
+				2A75581ED579005C72375AAB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8DD5F5247778B29E6ABA8859 /* PBXTargetDependency */,
+			);
+			name = "ControlKit-iOS-UITests";
+			packageProductDependencies = (
+				BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */,
+				F83D3AB07112BE3B5C5CEEB0 /* NIOCore */,
+				39DF23C6EF63909919D192E1 /* NIOHTTP1 */,
+				C9A26D0E7AB404E7BE27C778 /* NIOPosix */,
+			);
+			productName = "ControlKit-iOS-UITests";
+			productReference = F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A886E2D8FDDF1B058227A931 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					09F6B446FD034D1BCF7FE56B = {
+						TestTargetID = 720F3EC917A0116B593FBBBB;
+					};
+					8B29B60E49F265583C3FB987 = {
+						TestTargetID = 029C796A915A8119077A2F2D;
+					};
+					CD73A40CAB68D297974A7E90 = {
+						TestTargetID = 9F5E3C368E274D9C0BF1AC09;
+					};
+				};
+			};
+			buildConfigurationList = 5DD1F1B919E5F8BC9E03021C /* Build configuration list for PBXProject "XCRSControlKitRunner" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 8BF319E1B3CB4CA319D804BA;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */,
+				B1F1238966374497306EE6F6 /* XCLocalSwiftPackageReference ".." */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 2D1B85549DE31AFEDF5D1159 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9F5E3C368E274D9C0BF1AC09 /* ControlKit-iOS */,
+				CD73A40CAB68D297974A7E90 /* ControlKit-iOS-UITests */,
+				029C796A915A8119077A2F2D /* ControlKit-tvOS */,
+				8B29B60E49F265583C3FB987 /* ControlKit-tvOS-UITests */,
+				720F3EC917A0116B593FBBBB /* ControlKit-visionOS */,
+				09F6B446FD034D1BCF7FE56B /* ControlKit-visionOS-UITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		23790115E256D87FAB658E0B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7CAF0B42FF68BF36CAC8C8CD /* Assets.xcassets in Resources */,
+				6F0CF3B6D51AEB5C4F3E1827 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A88C8E544C02C1D56E86A9C7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C552103B6652E1005DB6B8C3 /* Assets.xcassets in Resources */,
+				8F79A6E8A60191E7A095D2F2 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FE06AFC9AE7B730022308652 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5C1F1D551479D29CA351EEF1 /* Assets.xcassets in Resources */,
+				B986DCE75E07965CA4C1E7F8 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		25A5679D9AB0D84C081D9343 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C8B2C54C0B06115DE7F14ACE /* ControlKitRunnerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		47F2DEFAC8AF9B4172ECBF89 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C0DC985C9D52F33FFB8943E8 /* ControlKitRPCServer.swift in Sources */,
+				0BF8E6E42A39CE747AD5ED5D /* ControlKitRunnerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5132E84347A81C2E808C959B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				100DCE12F169B8A38E219931 /* ControlKitRPCServer.swift in Sources */,
+				D96F5E268D3AFF7DC328622A /* ControlKitRunnerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5AC070701AB330C954DC582E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BEFE1733DCB97BE06F428AD2 /* ControlKitRunnerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FC626904619877E61D287BC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9540EFD6CC87D6DEF2FBFC0F /* ControlKitRPCServer.swift in Sources */,
+				25622E0215D89F31880E6356 /* ControlKitRunnerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		764FCDFA07EA6064FF3C21DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57C6D92B45E7092A5C2AD7D2 /* ControlKitRunnerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		55C3178DB2606813467C97CC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 720F3EC917A0116B593FBBBB /* ControlKit-visionOS */;
+			targetProxy = 30BC4151DCEA5E8BE24D8C93 /* PBXContainerItemProxy */;
+		};
+		8DD5F5247778B29E6ABA8859 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9F5E3C368E274D9C0BF1AC09 /* ControlKit-iOS */;
+			targetProxy = 154A64286F9DFB5C95CF695E /* PBXContainerItemProxy */;
+		};
+		F37FD1FE4F9670C2C355615F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 029C796A915A8119077A2F2D /* ControlKit-tvOS */;
+			targetProxy = AEE01B43669A92A0B635826C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		05E1C3E341C64C4F40D8F6EF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.ios.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		21F4165C7F57458C04C5805E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.ios.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2E51B9F5C20DD197F5FA4F07 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.visionos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Debug;
+		};
+		41FF10163C9AB188CF4891AF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.visionos.runnerUITests";
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = "ControlKit-visionOS";
+			};
+			name = Debug;
+		};
+		51FACD26B90FED54CC62D2FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Debug;
+		};
+		540AA08AAD985F8F777D57E1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.visionos.runnerUITests";
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+				TEST_TARGET_NAME = "ControlKit-visionOS";
+			};
+			name = Release;
+		};
+		5CCFC05738690F1B9995260B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.ios.runnerUITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ControlKit-iOS";
+			};
+			name = Release;
+		};
+		5DFC622632D5C806ABD2166A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.tvos.runnerUITests";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "ControlKit-tvOS";
+			};
+			name = Debug;
+		};
+		75D889A99C7B6070232E7838 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.tvos.runnerUITests";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+				TEST_TARGET_NAME = "ControlKit-tvOS";
+			};
+			name = Release;
+		};
+		83055E7AC43FEEB9B1276EDA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.ios.runnerUITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = "ControlKit-iOS";
+			};
+			name = Debug;
+		};
+		8E1F608170D5A28461B0F169 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.tvos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		9E70A7B791C8304A746AD74D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.visionos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = xros;
+				TARGETED_DEVICE_FAMILY = 7;
+			};
+			name = Release;
+		};
+		AE247B8CB1FB1A6E8E8B8696 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.tvos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		E4C3287EEC34289D60AD8369 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+				TVOS_DEPLOYMENT_TARGET = 16.0;
+				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		42681BF128073F8CD1146052 /* Build configuration list for PBXNativeTarget "ControlKit-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				21F4165C7F57458C04C5805E /* Debug */,
+				05E1C3E341C64C4F40D8F6EF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		5DD1F1B919E5F8BC9E03021C /* Build configuration list for PBXProject "XCRSControlKitRunner" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				51FACD26B90FED54CC62D2FD /* Debug */,
+				E4C3287EEC34289D60AD8369 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		83E3FC025793339356561648 /* Build configuration list for PBXNativeTarget "ControlKit-iOS-UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				83055E7AC43FEEB9B1276EDA /* Debug */,
+				5CCFC05738690F1B9995260B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A3E875F2C0588D2AFB728EC8 /* Build configuration list for PBXNativeTarget "ControlKit-visionOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2E51B9F5C20DD197F5FA4F07 /* Debug */,
+				9E70A7B791C8304A746AD74D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B47E47F03867048313ED0BC9 /* Build configuration list for PBXNativeTarget "ControlKit-visionOS-UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				41FF10163C9AB188CF4891AF /* Debug */,
+				540AA08AAD985F8F777D57E1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DC1656DA116F4F1E1E7A9039 /* Build configuration list for PBXNativeTarget "ControlKit-tvOS-UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5DFC622632D5C806ABD2166A /* Debug */,
+				75D889A99C7B6070232E7838 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F90CA1FF8DF178C6B4D2D56F /* Build configuration list for PBXNativeTarget "ControlKit-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8E1F608170D5A28461B0F169 /* Debug */,
+				AE247B8CB1FB1A6E8E8B8696 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		B1F1238966374497306EE6F6 /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apple/swift-nio.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		17A1603CDD0A79E07FAC7D43 /* XCRSControlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XCRSControlKit;
+		};
+		1EEBDB1A27DC2D28A6BB1B95 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		2B7D7F431DC211BEDBFC374A /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+		39DF23C6EF63909919D192E1 /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		50AB05BF2C324210174A3476 /* XCRSControlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XCRSControlKit;
+		};
+		58494EA2BBD98AE84158250F /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		84A03CA7B1A8BF405AD3F3C4 /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XCRSControlKit;
+		};
+		C9A26D0E7AB404E7BE27C778 /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+		EE8C054B1BC0620402AEA51B /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		F83D3AB07112BE3B5C5CEEB0 /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		FFAF906BB53F58598BDAE35B /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = A886E2D8FDDF1B058227A931 /* Project object */;
+}

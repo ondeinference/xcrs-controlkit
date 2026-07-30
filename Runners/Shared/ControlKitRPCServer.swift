@@ -76,6 +76,8 @@ final class ControlKitRPCServer {
             let platform: XCRSControlKitPlatform = {
                 #if os(tvOS)
                 return .tvOS
+                #elseif os(visionOS)
+                return .visionOS
                 #else
                 return .iOS
                 #endif
@@ -102,21 +104,18 @@ final class ControlKitRPCServer {
             XCUIApplication(bundleIdentifier: bundleIdentifier).terminate()
             return try response(result: ["success": true], id: request.id)
         case "device.io.tap":
-            #if os(tvOS)
-            throw RunnerError.unsupportedButton("touch")
+            #if os(tvOS) || os(visionOS)
+            throw RunnerError.unsupportedInteraction("touch")
             #else
-            let x = try doubleParameter("x", request.params)
-            let y = try doubleParameter("y", request.params)
-            let application = foregroundApplication(request.params)
-            let frame = application.frame
-            let coordinate = application.coordinate(
-                withNormalizedOffset: CGVector(
-                    dx: max(0, min(1, x / Double(frame.width))),
-                    dy: max(0, min(1, y / Double(frame.height)))
-                )
-            )
-            coordinate.tap()
+            try tap(request.params)
             return try response(result: ["success": true], id: request.id)
+            #endif
+        case "device.io.spatial.tap":
+            #if os(visionOS)
+            try tap(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("spatial tap")
             #endif
         case "device.io.text":
             let text = try stringParameter("text", request.params)
@@ -145,13 +144,16 @@ final class ControlKitRPCServer {
                 throw RunnerError.unsupportedButton(button)
             }
             XCUIRemote.shared.press(press)
-            #else
+            return try response(result: ["success": true], id: request.id)
+            #elseif os(iOS)
             guard button == "home" else {
                 throw RunnerError.unsupportedButton(button)
             }
             XCUIDevice.shared.press(.home)
-            #endif
             return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedButton(button)
+            #endif
         default:
             return try response(error: -32601, message: "Method not found", id: request.id)
         }
@@ -163,6 +165,22 @@ final class ControlKitRPCServer {
         }
         return XCUIApplication()
     }
+
+    #if !os(tvOS)
+    private func tap(_ params: [String: Any]) throws {
+        let x = try doubleParameter("x", params)
+        let y = try doubleParameter("y", params)
+        let application = foregroundApplication(params)
+        let frame = application.frame
+        let coordinate = application.coordinate(
+            withNormalizedOffset: CGVector(
+                dx: max(0, min(1, x / Double(frame.width))),
+                dy: max(0, min(1, y / Double(frame.height)))
+            )
+        )
+        coordinate.tap()
+    }
+    #endif
 
     private func stringParameter(_ name: String, _ params: [String: Any]) throws -> String {
         guard let value = params[name] as? String, !value.isEmpty else {
@@ -256,13 +274,16 @@ private final class RPCHandler: ChannelInboundHandler {
 private enum RunnerError: LocalizedError {
     case invalidParameter(String)
     case unsupportedButton(String)
+    case unsupportedInteraction(String)
 
     var errorDescription: String? {
         switch self {
         case .invalidParameter(let name):
             return "Missing or invalid parameter: \(name)"
         case .unsupportedButton(let button):
-            return "Unsupported iOS button: \(button)"
+            return "Unsupported button: \(button)"
+        case .unsupportedInteraction(let interaction):
+            return "Unsupported interaction: \(interaction)"
         }
     }
 }

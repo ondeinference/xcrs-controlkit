@@ -22,7 +22,7 @@ Add the package URL to an Xcode project or Swift package:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/smbcloudXYZ/xcrs-controlkit.git", from: "0.1.0")
+    .package(url: "https://github.com/ondeinference/xcrs-controlkit.git", from: "0.1.0")
 ]
 ```
 
@@ -39,25 +39,27 @@ if capabilities.supports(.remoteButtons) {
 
 ## Runner projects
 
-Runner implementations belong outside the Swift package target:
+Runner implementations belong outside the Swift package target. All platforms
+share one Xcode project generated with XcodeGen:
 
 ```text
 Runners/
-├── iOS/
-├── tvOS/
-├── watchOS/
-├── visionOS/
-└── macOS/
+├── project.yml                     # XcodeGen spec
+├── XCRSControlKitRunner.xcodeproj  # one project, per-platform targets/schemes
+├── Shared/                         # transport + RPC server
+├── iOS/                            # iOS / iPadOS host app
+├── tvOS/                           # tvOS host app
+└── visionOS/                       # visionOS host app
 ```
 
-Each runner can import `XCRSControlKit` while using the appropriate Apple
-frameworks and Xcode test target for its platform.
+Each platform gets its own application and UI-test targets and a matching
+scheme (`ControlKit-iOS`, `ControlKit-tvOS`, `ControlKit-visionOS`) while
+importing `XCRSControlKit` and sharing the transport. See `Runners/README.md`.
 
 ## Status
 
-The package currently provides the public cross-platform contract. Native
-runner projects and transport implementations are being added incrementally,
-starting with iOS and tvOS.
+The package provides the public cross-platform contract. Native ControlKit
+runners currently support iOS, iPadOS, tvOS, and visionOS.
 
 ## License
 

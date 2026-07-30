@@ -1,9 +1,9 @@
-# XCRS ControlKit iOS runner
+# ControlKit iOS host app
 
-This is the first native runner owned by XCRS ControlKit. It is an Xcode UI
-testing project, not a SwiftPM target, and imports the public
-`XCRSControlKit` package for capability and request contracts.
+This folder holds the iOS / iPadOS host application (`ControlKitRunnerApp.swift`
+and `Assets.xcassets`) for the `ControlKit-iOS` target in the shared
+`XCRSControlKitRunner.xcodeproj`.
 
-The runner exposes a small localhost JSON-RPC server to the Rust `xcrs`
-client using SwiftNIO's HTTP/1 server pipeline. It is an independent
-ControlKit implementation with no private XCTest headers.
+Touch input is delivered through `XCUICoordinate` taps; the `home` button maps
+to `XCUIDevice`. The JSON-RPC transport and server live in `../Shared` and are
+compiled into the `ControlKit-iOS-UITests` target.
