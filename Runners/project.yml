@@ -6,6 +6,8 @@ options:
     iOS: "16.0"
     tvOS: "16.0"
     visionOS: "1.0"
+    macOS: "13.0"
+    watchOS: "9.0"
 
 settings:
   base:
@@ -103,6 +105,45 @@ targets:
       platformName: visionOS
       platformId: visionos
 
+  ControlKit-macOS:
+    templates: [Runner]
+    platform: macOS
+    templateAttributes:
+      platformDir: macOS
+      platformId: macos
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: NO
+  ControlKit-macOS-UITests:
+    templates: [UITests]
+    platform: macOS
+    templateAttributes:
+      platformName: macOS
+      platformId: macos
+    settings:
+      base:
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_ENTITLEMENTS: macOS/ControlKit-macOS-UITests.entitlements
+
+  ControlKit-watchOS:
+    templates: [Runner]
+    platform: watchOS
+    templateAttributes:
+      platformDir: watchOS
+      platformId: watchos
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "4"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  ControlKit-watchOS-UITests:
+    templates: [UITests]
+    platform: watchOS
+    templateAttributes:
+      platformName: watchOS
+      platformId: watchos
+
 schemes:
   ControlKit-iOS:
     build:
@@ -128,3 +169,19 @@ schemes:
     test:
       targets:
         - ControlKit-visionOS-UITests
+  ControlKit-macOS:
+    build:
+      targets:
+        ControlKit-macOS: all
+        ControlKit-macOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-macOS-UITests
+  ControlKit-watchOS:
+    build:
+      targets:
+        ControlKit-watchOS: all
+        ControlKit-watchOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-watchOS-UITests

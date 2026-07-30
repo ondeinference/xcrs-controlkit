@@ -15,7 +15,9 @@ Runners/
 │   └── ControlKitRunnerUITests.swift
 ├── iOS/                            # iOS / iPadOS host app + assets
 ├── tvOS/                           # tvOS host app + assets
-└── visionOS/                       # visionOS host app + assets
+├── visionOS/                       # visionOS host app + assets
+├── macOS/                          # macOS host app + assets
+└── watchOS/                        # watchOS host app + assets
 ```
 
 ## Targets and schemes
@@ -25,6 +27,8 @@ Runners/
 | `ControlKit-iOS` | `ControlKit-iOS` | `ControlKit-iOS-UITests` | iOS / iPadOS |
 | `ControlKit-tvOS` | `ControlKit-tvOS` | `ControlKit-tvOS-UITests` | tvOS |
 | `ControlKit-visionOS` | `ControlKit-visionOS` | `ControlKit-visionOS-UITests` | visionOS |
+| `ControlKit-macOS` | `ControlKit-macOS` | `ControlKit-macOS-UITests` | macOS |
+| `ControlKit-watchOS` | `ControlKit-watchOS` | `ControlKit-watchOS-UITests` | watchOS |
 
 Each UI-test target compiles the shared `Shared/` sources for its platform, so
 platform behaviour is selected at compile time via `#if os(...)` in

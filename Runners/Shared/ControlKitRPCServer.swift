@@ -78,6 +78,10 @@ final class ControlKitRPCServer {
                 return .tvOS
                 #elseif os(visionOS)
                 return .visionOS
+                #elseif os(macOS)
+                return .macOS
+                #elseif os(watchOS)
+                return .watchOS
                 #else
                 return .iOS
                 #endif
@@ -104,11 +108,18 @@ final class ControlKitRPCServer {
             XCUIApplication(bundleIdentifier: bundleIdentifier).terminate()
             return try response(result: ["success": true], id: request.id)
         case "device.io.tap":
-            #if os(tvOS) || os(visionOS)
+            #if os(tvOS) || os(visionOS) || os(macOS)
             throw RunnerError.unsupportedInteraction("touch")
             #else
             try tap(request.params)
             return try response(result: ["success": true], id: request.id)
+            #endif
+        case "device.io.click":
+            #if os(macOS)
+            try tap(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("pointer click")
             #endif
         case "device.io.spatial.tap":
             #if os(visionOS)

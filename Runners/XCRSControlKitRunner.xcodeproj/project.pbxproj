@@ -11,21 +11,33 @@
 		0DFC449880A304B5154D7F6D /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */; };
 		100DCE12F169B8A38E219931 /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
 		25622E0215D89F31880E6356 /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		2CE41182704301ED3E17F12A /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 611C969D93EC290726A7395E /* NIOCore */; };
 		3CAE36F48F2BB14EC17B1A49 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 39DF23C6EF63909919D192E1 /* NIOHTTP1 */; };
+		42F868C46B85D81A82D325F0 /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
+		49C565818AD8C7C3D85C498E /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
 		4D29102252109822A895B881 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = C9A26D0E7AB404E7BE27C778 /* NIOPosix */; };
+		560FDA8EB7B9DE368869D155 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FD4E3603A115950345EC4C96 /* Assets.xcassets */; };
+		561834A353CBD37B8354A58E /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 786AF91DEFF9CFAF6733FE5D /* NIOCore */; };
 		57C6D92B45E7092A5C2AD7D2 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */; };
 		57E28C91935955E0FCA55C21 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EEBDB1A27DC2D28A6BB1B95 /* NIOCore */; };
 		5C1F1D551479D29CA351EEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E395E1A9D0B3259F9C816109 /* Assets.xcassets */; };
+		607F9363076F0FE76CA24A73 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */; };
 		673EB3CCA913F73C710B72B0 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58494EA2BBD98AE84158250F /* NIOCore */; };
 		6D60E555ABB299495F608B27 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = 2B7D7F431DC211BEDBFC374A /* NIOPosix */; };
 		6F0CF3B6D51AEB5C4F3E1827 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 06ABEBF2BC26029BF199977C /* README.md */; };
 		7CAF0B42FF68BF36CAC8C8CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8A09FB52496A952CB13C163B /* Assets.xcassets */; };
 		7D3C77F9ABF4E0CD672DCEF5 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 84A03CA7B1A8BF405AD3F3C4 /* NIOHTTP1 */; };
+		82D074F9A9D0F5FD6F00CA7B /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
 		8F79A6E8A60191E7A095D2F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 3DFF0D230E8E7D8DF4E8AF86 /* README.md */; };
 		93235E8B38222B9CC779ED84 /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 50AB05BF2C324210174A3476 /* XCRSControlKit */; };
 		9540EFD6CC87D6DEF2FBFC0F /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
 		986705883AA98C348CFE6E72 /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = 17A1603CDD0A79E07FAC7D43 /* XCRSControlKit */; };
+		9CC0F626565F3ADFBCAEFE1C /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = F1634B11C3B52F3F9511DF74 /* XCRSControlKit */; };
+		9DF1151412A41AC8D2EDE2D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 40A16F9F72DA073E165B0149 /* Assets.xcassets */; };
 		9DFD228E556F05433F75A568 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = EE8C054B1BC0620402AEA51B /* NIOHTTP1 */; };
+		A5BD016357891BCC301E3E4E /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC6FBC92946E0D2F913F6A1E /* ControlKitRunnerApp.swift */; };
+		AABA08D219C9E167F666E012 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 9CEC91988487EAD9E87B6D83 /* NIOHTTP1 */; };
+		AAED42787D0BEB5F637C9163 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = 3253817A08FC0D668A552FA6 /* NIOPosix */; };
 		B2A57E383F93751851FE880C /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = F83D3AB07112BE3B5C5CEEB0 /* NIOCore */; };
 		B986DCE75E07965CA4C1E7F8 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = D11F41B613A58B56653C16C6 /* README.md */; };
 		BEFE1733DCB97BE06F428AD2 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */; };
@@ -33,7 +45,11 @@
 		C552103B6652E1005DB6B8C3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D9522A60419FFC7F405FE88 /* Assets.xcassets */; };
 		C8B2C54C0B06115DE7F14ACE /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */; };
 		D96F5E268D3AFF7DC328622A /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		E0EA8983AA28CBEFEBDFE501 /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
+		E2BD398ADA1021C423A4B263 /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = A71D21E23B0941B7D7C03762 /* XCRSControlKit */; };
+		E73C698597C5E140B7FC84A2 /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = 4DB5F4B1F3592AA72060C1FB /* NIOPosix */; };
 		E7D00D2B9B79391ABB28574C /* NIOPosix in Frameworks */ = {isa = PBXBuildFile; productRef = FFAF906BB53F58598BDAE35B /* NIOPosix */; };
+		EB7069C674DA185740685F87 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 3E030B34C4FDF41205C694F8 /* NIOHTTP1 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +67,20 @@
 			remoteGlobalIDString = 720F3EC917A0116B593FBBBB;
 			remoteInfo = "ControlKit-visionOS";
 		};
+		3975F74C863C2E47636D5DAE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5B67E51B3C9E09531D57616F;
+			remoteInfo = "ControlKit-macOS";
+		};
+		5A71C8672C07A86ED68BC559 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E85C2DCD1888C5276C1F13E4;
+			remoteInfo = "ControlKit-watchOS";
+		};
 		AEE01B43669A92A0B635826C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A886E2D8FDDF1B058227A931 /* Project object */;
@@ -62,26 +92,46 @@
 
 /* Begin PBXFileReference section */
 		06ABEBF2BC26029BF199977C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-tvOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-iOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9522A60419FFC7F405FE88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-visionOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ControlKit-macOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DFF0D230E8E7D8DF4E8AF86 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		40A16F9F72DA073E165B0149 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
+		5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ControlKit-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-visionOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		8A09FB52496A952CB13C163B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-tvOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRPCServer.swift; sourceTree = "<group>"; };
+		9D200812648C48867D12D43D /* ControlKit-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ControlKit-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
+		B4A7C1166461333A52056112 /* ControlKit-macOS-UITests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ControlKit-macOS-UITests.entitlements"; sourceTree = "<group>"; };
+		CD648878AF85C1F1CC002EC1 /* ControlKit-watchOS-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ControlKit-watchOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D11F41B613A58B56653C16C6 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		D1DCCDE3A93E1CF31802D658 /* xcrs-controlkit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "xcrs-controlkit"; path = ..; sourceTree = SOURCE_ROOT; };
 		D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerUITests.swift; sourceTree = "<group>"; };
 		E395E1A9D0B3259F9C816109 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EC6FBC92946E0D2F913F6A1E /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-iOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FD4E3603A115950345EC4C96 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1BD2A5EFA635301D4165CD27 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9CC0F626565F3ADFBCAEFE1C /* XCRSControlKit in Frameworks */,
+				561834A353CBD37B8354A58E /* NIOCore in Frameworks */,
+				EB7069C674DA185740685F87 /* NIOHTTP1 in Frameworks */,
+				AAED42787D0BEB5F637C9163 /* NIOPosix in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2A75581ED579005C72375AAB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +165,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		F086B824B8DB8D48046D2A34 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E2BD398ADA1021C423A4B263 /* XCRSControlKit in Frameworks */,
+				2CE41182704301ED3E17F12A /* NIOCore in Frameworks */,
+				AABA08D219C9E167F666E012 /* NIOHTTP1 in Frameworks */,
+				E73C698597C5E140B7FC84A2 /* NIOPosix in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -142,22 +203,47 @@
 			children = (
 				F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */,
 				0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */,
+				3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */,
+				5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */,
 				904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */,
 				08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */,
 				5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */,
 				2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */,
+				CD648878AF85C1F1CC002EC1 /* ControlKit-watchOS-UITests.xctest */,
+				9D200812648C48867D12D43D /* ControlKit-watchOS.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		72270F7916B04830BCC2AB34 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				FD4E3603A115950345EC4C96 /* Assets.xcassets */,
+				EC6FBC92946E0D2F913F6A1E /* ControlKitRunnerApp.swift */,
+			);
+			path = watchOS;
+			sourceTree = "<group>";
+		};
+		820ECEA915ACE527EF0CA19E /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				40A16F9F72DA073E165B0149 /* Assets.xcassets */,
+				B4A7C1166461333A52056112 /* ControlKit-macOS-UITests.entitlements */,
+				5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */,
+			);
+			path = macOS;
 			sourceTree = "<group>";
 		};
 		8BF319E1B3CB4CA319D804BA = {
 			isa = PBXGroup;
 			children = (
 				CEE9E165E43396ABDCF722E3 /* iOS */,
+				820ECEA915ACE527EF0CA19E /* macOS */,
 				AAF9A6C2C031D435E78F618D /* Packages */,
 				0AD16B636A496FC575FABB2F /* Shared */,
 				F3830AB6FA85799037B91E7D /* tvOS */,
 				18CD92B06EDA4B61503FE8DA /* visionOS */,
+				72270F7916B04830BCC2AB34 /* watchOS */,
 				2D1B85549DE31AFEDF5D1159 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -234,6 +320,24 @@
 			productReference = 5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		5B67E51B3C9E09531D57616F /* ControlKit-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6C80CE473AEC1B232446EB2 /* Build configuration list for PBXNativeTarget "ControlKit-macOS" */;
+			buildPhases = (
+				9A9604B1CA131DA035CE57B4 /* Sources */,
+				F6FC78229E31A8705EA840DA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ControlKit-macOS";
+			packageProductDependencies = (
+			);
+			productName = "ControlKit-macOS";
+			productReference = 5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 		720F3EC917A0116B593FBBBB /* ControlKit-visionOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A3E875F2C0588D2AFB728EC8 /* Build configuration list for PBXNativeTarget "ControlKit-visionOS" */;
@@ -251,6 +355,29 @@
 			productName = "ControlKit-visionOS";
 			productReference = 2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */;
 			productType = "com.apple.product-type.application";
+		};
+		8A89960127FE4F8007E66449 /* ControlKit-watchOS-UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 708FB1855395DEDE0D00C5D9 /* Build configuration list for PBXNativeTarget "ControlKit-watchOS-UITests" */;
+			buildPhases = (
+				DBDE4573C281CF3AAC9BE22F /* Sources */,
+				1BD2A5EFA635301D4165CD27 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E84304E076EE747D380D070C /* PBXTargetDependency */,
+			);
+			name = "ControlKit-watchOS-UITests";
+			packageProductDependencies = (
+				F1634B11C3B52F3F9511DF74 /* XCRSControlKit */,
+				786AF91DEFF9CFAF6733FE5D /* NIOCore */,
+				3E030B34C4FDF41205C694F8 /* NIOHTTP1 */,
+				3253817A08FC0D668A552FA6 /* NIOPosix */,
+			);
+			productName = "ControlKit-watchOS-UITests";
+			productReference = CD648878AF85C1F1CC002EC1 /* ControlKit-watchOS-UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 		8B29B60E49F265583C3FB987 /* ControlKit-tvOS-UITests */ = {
 			isa = PBXNativeTarget;
@@ -293,6 +420,29 @@
 			productReference = 0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		BBEDFC1F8A411D980AF3432F /* ControlKit-macOS-UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E61F070B23F4FAE658E19065 /* Build configuration list for PBXNativeTarget "ControlKit-macOS-UITests" */;
+			buildPhases = (
+				0E5FA41A44AC2624E81E9974 /* Sources */,
+				F086B824B8DB8D48046D2A34 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				071B3FE090CFAEFBE620914A /* PBXTargetDependency */,
+			);
+			name = "ControlKit-macOS-UITests";
+			packageProductDependencies = (
+				A71D21E23B0941B7D7C03762 /* XCRSControlKit */,
+				611C969D93EC290726A7395E /* NIOCore */,
+				9CEC91988487EAD9E87B6D83 /* NIOHTTP1 */,
+				4DB5F4B1F3592AA72060C1FB /* NIOPosix */,
+			);
+			productName = "ControlKit-macOS-UITests";
+			productReference = 3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		CD73A40CAB68D297974A7E90 /* ControlKit-iOS-UITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 83E3FC025793339356561648 /* Build configuration list for PBXNativeTarget "ControlKit-iOS-UITests" */;
@@ -316,6 +466,24 @@
 			productReference = F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		E85C2DCD1888C5276C1F13E4 /* ControlKit-watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D28A8B9028C344107343F1FB /* Build configuration list for PBXNativeTarget "ControlKit-watchOS" */;
+			buildPhases = (
+				08F2647A4EB5883ED31CD05C /* Sources */,
+				5DE56F756B7A75E80ACF62EB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "ControlKit-watchOS";
+			packageProductDependencies = (
+			);
+			productName = "ControlKit-watchOS";
+			productReference = 9D200812648C48867D12D43D /* ControlKit-watchOS.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -328,8 +496,14 @@
 					09F6B446FD034D1BCF7FE56B = {
 						TestTargetID = 720F3EC917A0116B593FBBBB;
 					};
+					8A89960127FE4F8007E66449 = {
+						TestTargetID = E85C2DCD1888C5276C1F13E4;
+					};
 					8B29B60E49F265583C3FB987 = {
 						TestTargetID = 029C796A915A8119077A2F2D;
+					};
+					BBEDFC1F8A411D980AF3432F = {
+						TestTargetID = 5B67E51B3C9E09531D57616F;
 					};
 					CD73A40CAB68D297974A7E90 = {
 						TestTargetID = 9F5E3C368E274D9C0BF1AC09;
@@ -360,6 +534,10 @@
 				8B29B60E49F265583C3FB987 /* ControlKit-tvOS-UITests */,
 				720F3EC917A0116B593FBBBB /* ControlKit-visionOS */,
 				09F6B446FD034D1BCF7FE56B /* ControlKit-visionOS-UITests */,
+				5B67E51B3C9E09531D57616F /* ControlKit-macOS */,
+				BBEDFC1F8A411D980AF3432F /* ControlKit-macOS-UITests */,
+				E85C2DCD1888C5276C1F13E4 /* ControlKit-watchOS */,
+				8A89960127FE4F8007E66449 /* ControlKit-watchOS-UITests */,
 			);
 		};
 /* End PBXProject section */
@@ -374,12 +552,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		5DE56F756B7A75E80ACF62EB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				560FDA8EB7B9DE368869D155 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A88C8E544C02C1D56E86A9C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				C552103B6652E1005DB6B8C3 /* Assets.xcassets in Resources */,
 				8F79A6E8A60191E7A095D2F2 /* README.md in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F6FC78229E31A8705EA840DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9DF1151412A41AC8D2EDE2D5 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +589,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		08F2647A4EB5883ED31CD05C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A5BD016357891BCC301E3E4E /* ControlKitRunnerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0E5FA41A44AC2624E81E9974 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				82D074F9A9D0F5FD6F00CA7B /* ControlKitRPCServer.swift in Sources */,
+				E0EA8983AA28CBEFEBDFE501 /* ControlKitRunnerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		25A5679D9AB0D84C081D9343 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -446,9 +657,31 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9A9604B1CA131DA035CE57B4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				607F9363076F0FE76CA24A73 /* ControlKitRunnerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DBDE4573C281CF3AAC9BE22F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				42F868C46B85D81A82D325F0 /* ControlKitRPCServer.swift in Sources */,
+				49C565818AD8C7C3D85C498E /* ControlKitRunnerUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		071B3FE090CFAEFBE620914A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5B67E51B3C9E09531D57616F /* ControlKit-macOS */;
+			targetProxy = 3975F74C863C2E47636D5DAE /* PBXContainerItemProxy */;
+		};
 		55C3178DB2606813467C97CC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 720F3EC917A0116B593FBBBB /* ControlKit-visionOS */;
@@ -458,6 +691,11 @@
 			isa = PBXTargetDependency;
 			target = 9F5E3C368E274D9C0BF1AC09 /* ControlKit-iOS */;
 			targetProxy = 154A64286F9DFB5C95CF695E /* PBXContainerItemProxy */;
+		};
+		E84304E076EE747D380D070C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E85C2DCD1888C5276C1F13E4 /* ControlKit-watchOS */;
+			targetProxy = 5A71C8672C07A86ED68BC559 /* PBXContainerItemProxy */;
 		};
 		F37FD1FE4F9670C2C355615F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -484,6 +722,23 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
+		};
+		0615B9D71FCA89F904AEAB2D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runnerUITests";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "ControlKit-watchOS";
+			};
+			name = Debug;
 		};
 		21F4165C7F57458C04C5805E /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -517,6 +772,41 @@
 				TARGETED_DEVICE_FAMILY = 7;
 			};
 			name = Debug;
+		};
+		337182B361D51F9D6F10F5DC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.macos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		37B91A75D6E30BD6311172CE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = "macOS/ControlKit-macOS-UITests.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.macos.runnerUITests";
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = "ControlKit-macOS";
+			};
+			name = Release;
 		};
 		41FF10163C9AB188CF4891AF /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -588,10 +878,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -600,6 +888,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.9;
 				TVOS_DEPLOYMENT_TARGET = 16.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
 			};
 			name = Debug;
@@ -715,6 +1004,30 @@
 			};
 			name = Release;
 		};
+		A15E58D90454C1314DF91A79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
+		};
+		A24720312170C6FC3A02C248 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
+		};
 		AE247B8CB1FB1A6E8E8B8696 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -728,6 +1041,41 @@
 				PRODUCT_NAME = ControlKit;
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		B656C0A63029764B760E4397 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_ENTITLEMENTS = "macOS/ControlKit-macOS-UITests.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.macos.runnerUITests";
+				SDKROOT = macosx;
+				TEST_TARGET_NAME = "ControlKit-macOS";
+			};
+			name = Debug;
+		};
+		D749370E86B8B19A96D7BC0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runnerUITests";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "ControlKit-watchOS";
 			};
 			name = Release;
 		};
@@ -779,10 +1127,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -790,7 +1136,25 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.9;
 				TVOS_DEPLOYMENT_TARGET = 16.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 				XROS_DEPLOYMENT_TARGET = 1.0;
+			};
+			name = Release;
+		};
+		F39E0821F2FA6F20D59DF041 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.macos.runner";
+				PRODUCT_NAME = ControlKit;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
@@ -811,6 +1175,15 @@
 			buildConfigurations = (
 				51FACD26B90FED54CC62D2FD /* Debug */,
 				E4C3287EEC34289D60AD8369 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		708FB1855395DEDE0D00C5D9 /* Build configuration list for PBXNativeTarget "ControlKit-watchOS-UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0615B9D71FCA89F904AEAB2D /* Debug */,
+				D749370E86B8B19A96D7BC0E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -842,11 +1215,38 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		D28A8B9028C344107343F1FB /* Build configuration list for PBXNativeTarget "ControlKit-watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A15E58D90454C1314DF91A79 /* Debug */,
+				A24720312170C6FC3A02C248 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D6C80CE473AEC1B232446EB2 /* Build configuration list for PBXNativeTarget "ControlKit-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				337182B361D51F9D6F10F5DC /* Debug */,
+				F39E0821F2FA6F20D59DF041 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		DC1656DA116F4F1E1E7A9039 /* Build configuration list for PBXNativeTarget "ControlKit-tvOS-UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5DFC622632D5C806ABD2166A /* Debug */,
 				75D889A99C7B6070232E7838 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E61F070B23F4FAE658E19065 /* Build configuration list for PBXNativeTarget "ControlKit-macOS-UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B656C0A63029764B760E4397 /* Debug */,
+				37B91A75D6E30BD6311172CE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
@@ -895,10 +1295,25 @@
 			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIOPosix;
 		};
+		3253817A08FC0D668A552FA6 /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
+		};
 		39DF23C6EF63909919D192E1 /* NIOHTTP1 */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIOHTTP1;
+		};
+		3E030B34C4FDF41205C694F8 /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		4DB5F4B1F3592AA72060C1FB /* NIOPosix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOPosix;
 		};
 		50AB05BF2C324210174A3476 /* XCRSControlKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -909,10 +1324,29 @@
 			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIOCore;
 		};
+		611C969D93EC290726A7395E /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
+		786AF91DEFF9CFAF6733FE5D /* NIOCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOCore;
+		};
 		84A03CA7B1A8BF405AD3F3C4 /* NIOHTTP1 */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIOHTTP1;
+		};
+		9CEC91988487EAD9E87B6D83 /* NIOHTTP1 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
+			productName = NIOHTTP1;
+		};
+		A71D21E23B0941B7D7C03762 /* XCRSControlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XCRSControlKit;
 		};
 		BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -927,6 +1361,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 097CD02F3C7519204C9CDC73 /* XCRemoteSwiftPackageReference "swift-nio" */;
 			productName = NIOHTTP1;
+		};
+		F1634B11C3B52F3F9511DF74 /* XCRSControlKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XCRSControlKit;
 		};
 		F83D3AB07112BE3B5C5CEEB0 /* NIOCore */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -49,17 +49,20 @@ Runners/
 ├── Shared/                         # transport + RPC server
 ├── iOS/                            # iOS / iPadOS host app
 ├── tvOS/                           # tvOS host app
-└── visionOS/                       # visionOS host app
+├── visionOS/                       # visionOS host app
+├── macOS/                          # macOS host app
+└── watchOS/                        # watchOS host app
 ```
 
 Each platform gets its own application and UI-test targets and a matching
-scheme (`ControlKit-iOS`, `ControlKit-tvOS`, `ControlKit-visionOS`) while
-importing `XCRSControlKit` and sharing the transport. See `Runners/README.md`.
+scheme (`ControlKit-iOS`, `ControlKit-tvOS`, `ControlKit-visionOS`,
+`ControlKit-macOS`, `ControlKit-watchOS`) while importing `XCRSControlKit` and
+sharing the transport. See `Runners/README.md`.
 
 ## Status
 
 The package provides the public cross-platform contract. Native ControlKit
-runners currently support iOS, iPadOS, tvOS, and visionOS.
+runners currently support iOS, iPadOS, tvOS, visionOS, macOS, and watchOS.
 
 ## License
 
