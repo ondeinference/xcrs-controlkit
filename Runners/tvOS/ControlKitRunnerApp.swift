@@ -72,7 +72,7 @@ private struct ControlKitShowcaseView: View {
     private var informationCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             infoRow(title: "Project", value: "XCRSControlKit")
-            infoRow(title: "Creator", value: "smbCloudXYZ")
+            infoRow(title: "Creator", value: "smbCloud")
             infoRow(title: "Platform", value: "tvOS")
             infoRow(title: "Purpose", value: "Native UI automation runner")
         }

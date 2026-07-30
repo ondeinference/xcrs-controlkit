@@ -1,0 +1,188 @@
+name: XCRSControlKitRunner
+options:
+  bundleIdPrefix: com.smbcloud.xcrs-controlkit
+  createIntermediateGroups: true
+  deploymentTarget:
+    iOS: "16.0"
+    tvOS: "16.0"
+    visionOS: "1.0"
+    macOS: "13.0"
+    watchOS: "9.0"
+
+settings:
+  base:
+    SWIFT_VERSION: "5.9"
+    GENERATE_INFOPLIST_FILE: YES
+    INFOPLIST_KEY_CFBundleDisplayName: ControlKit
+    LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
+
+packages:
+  XCRSControlKit:
+    path: ..
+  swift-nio:
+    url: https://github.com/apple/swift-nio.git
+    from: 2.0.0
+
+targetTemplates:
+  Runner:
+    type: application
+    sources:
+      - path: ${platformDir}
+    settings:
+      base:
+        PRODUCT_NAME: ControlKit
+        PRODUCT_BUNDLE_IDENTIFIER: com.smbcloud.xcrs-controlkit.${platformId}.runner
+  UITests:
+    type: bundle.ui-testing
+    sources:
+      - path: Shared
+    dependencies:
+      - target: ControlKit-${platformName}
+      - package: XCRSControlKit
+        product: XCRSControlKit
+      - package: swift-nio
+        product: NIOCore
+      - package: swift-nio
+        product: NIOHTTP1
+      - package: swift-nio
+        product: NIOPosix
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.smbcloud.xcrs-controlkit.${platformId}.runnerUITests
+        TEST_TARGET_NAME: ControlKit-${platformName}
+
+targets:
+  ControlKit-iOS:
+    templates: [Runner]
+    platform: iOS
+    templateAttributes:
+      platformDir: iOS
+      platformId: ios
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "1,2"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_UIRequiresFullScreen: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations: UIInterfaceOrientationPortrait
+  ControlKit-iOS-UITests:
+    templates: [UITests]
+    platform: iOS
+    templateAttributes:
+      platformName: iOS
+      platformId: ios
+
+  ControlKit-tvOS:
+    templates: [Runner]
+    platform: tvOS
+    templateAttributes:
+      platformDir: tvOS
+      platformId: tvos
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "3"
+        ASSETCATALOG_COMPILER_APPICON_NAME: "App Icon & Top Shelf Image"
+  ControlKit-tvOS-UITests:
+    templates: [UITests]
+    platform: tvOS
+    templateAttributes:
+      platformName: tvOS
+      platformId: tvos
+
+  ControlKit-visionOS:
+    templates: [Runner]
+    platform: visionOS
+    templateAttributes:
+      platformDir: visionOS
+      platformId: visionos
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "7"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  ControlKit-visionOS-UITests:
+    templates: [UITests]
+    platform: visionOS
+    templateAttributes:
+      platformName: visionOS
+      platformId: visionos
+
+  ControlKit-macOS:
+    templates: [Runner]
+    platform: macOS
+    templateAttributes:
+      platformDir: macOS
+      platformId: macos
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_IDENTITY: "-"
+        ENABLE_HARDENED_RUNTIME: NO
+  ControlKit-macOS-UITests:
+    templates: [UITests]
+    platform: macOS
+    templateAttributes:
+      platformName: macOS
+      platformId: macos
+    settings:
+      base:
+        CODE_SIGN_IDENTITY: "-"
+        CODE_SIGN_ENTITLEMENTS: macOS/ControlKit-macOS-UITests.entitlements
+
+  ControlKit-watchOS:
+    templates: [Runner]
+    platform: watchOS
+    templateAttributes:
+      platformDir: watchOS
+      platformId: watchos
+    settings:
+      base:
+        TARGETED_DEVICE_FAMILY: "4"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_WKWatchOnly: YES
+  ControlKit-watchOS-UITests:
+    templates: [UITests]
+    platform: watchOS
+    templateAttributes:
+      platformName: watchOS
+      platformId: watchos
+
+schemes:
+  ControlKit-iOS:
+    build:
+      targets:
+        ControlKit-iOS: all
+        ControlKit-iOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-iOS-UITests
+  ControlKit-tvOS:
+    build:
+      targets:
+        ControlKit-tvOS: all
+        ControlKit-tvOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-tvOS-UITests
+  ControlKit-visionOS:
+    build:
+      targets:
+        ControlKit-visionOS: all
+        ControlKit-visionOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-visionOS-UITests
+  ControlKit-macOS:
+    build:
+      targets:
+        ControlKit-macOS: all
+        ControlKit-macOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-macOS-UITests
+  ControlKit-watchOS:
+    build:
+      targets:
+        ControlKit-watchOS: all
+        ControlKit-watchOS-UITests: [test]
+    test:
+      targets:
+        - ControlKit-watchOS-UITests

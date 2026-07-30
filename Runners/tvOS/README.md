@@ -1,9 +1,9 @@
-# XCRS ControlKit tvOS runner
+# ControlKit tvOS host app
 
-This is the native tvOS runner owned by XCRS ControlKit. It is an Xcode UI
-testing project, not a SwiftPM target, and imports the public
-`XCRSControlKit` package for capability and request contracts.
+This folder holds the tvOS host application (`ControlKitRunnerApp.swift` and
+`Assets.xcassets`) for the `ControlKit-tvOS` target in the shared
+`XCRSControlKitRunner.xcodeproj`.
 
-The runner exposes a localhost JSON-RPC server to the Rust `xcrs` client using
-SwiftNIO's HTTP/1 server pipeline. tvOS remote buttons are handled through
-`XCUIRemote`, with no DeviceKit source or private XCTest headers.
+tvOS is remote-driven: `device.io.button` maps to `XCUIRemote` presses and
+touch/`home` are intentionally unsupported. The JSON-RPC transport and server
+live in `../Shared` and are compiled into the `ControlKit-tvOS-UITests` target.
