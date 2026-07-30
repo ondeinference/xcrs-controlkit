@@ -137,6 +137,7 @@ targets:
       base:
         TARGETED_DEVICE_FAMILY: "4"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        INFOPLIST_KEY_WKWatchOnly: YES
   ControlKit-watchOS-UITests:
     templates: [UITests]
     platform: watchOS

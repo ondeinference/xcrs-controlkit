@@ -10,6 +10,7 @@
 		0BF8E6E42A39CE747AD5ED5D /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
 		0DFC449880A304B5154D7F6D /* XCRSControlKit in Frameworks */ = {isa = PBXBuildFile; productRef = BE99FEAB3F75651FC71BB9B5 /* XCRSControlKit */; };
 		100DCE12F169B8A38E219931 /* ControlKitRPCServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */; };
+		16FD91843DB787E92BBF41D6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 243F4A0C8F7567EDEEE21282 /* README.md */; };
 		25622E0215D89F31880E6356 /* ControlKitRunnerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D582F818EB333BD812EBDAC7 /* ControlKitRunnerUITests.swift */; };
 		2CE41182704301ED3E17F12A /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 611C969D93EC290726A7395E /* NIOCore */; };
 		3CAE36F48F2BB14EC17B1A49 /* NIOHTTP1 in Frameworks */ = {isa = PBXBuildFile; productRef = 39DF23C6EF63909919D192E1 /* NIOHTTP1 */; };
@@ -20,6 +21,7 @@
 		561834A353CBD37B8354A58E /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 786AF91DEFF9CFAF6733FE5D /* NIOCore */; };
 		57C6D92B45E7092A5C2AD7D2 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */; };
 		57E28C91935955E0FCA55C21 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1EEBDB1A27DC2D28A6BB1B95 /* NIOCore */; };
+		5AE42BE2CFBC1A90028E7C6C /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 511F38504131E988C4903A29 /* README.md */; };
 		5C1F1D551479D29CA351EEF1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E395E1A9D0B3259F9C816109 /* Assets.xcassets */; };
 		607F9363076F0FE76CA24A73 /* ControlKitRunnerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */; };
 		673EB3CCA913F73C710B72B0 /* NIOCore in Frameworks */ = {isa = PBXBuildFile; productRef = 58494EA2BBD98AE84158250F /* NIOCore */; };
@@ -95,10 +97,12 @@
 		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9522A60419FFC7F405FE88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		243F4A0C8F7567EDEEE21282 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ControlKit-macOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DFF0D230E8E7D8DF4E8AF86 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		40A16F9F72DA073E165B0149 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		511F38504131E988C4903A29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ControlKit-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-visionOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -220,6 +224,7 @@
 			children = (
 				FD4E3603A115950345EC4C96 /* Assets.xcassets */,
 				EC6FBC92946E0D2F913F6A1E /* ControlKitRunnerApp.swift */,
+				243F4A0C8F7567EDEEE21282 /* README.md */,
 			);
 			path = watchOS;
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 				40A16F9F72DA073E165B0149 /* Assets.xcassets */,
 				B4A7C1166461333A52056112 /* ControlKit-macOS-UITests.entitlements */,
 				5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */,
+				511F38504131E988C4903A29 /* README.md */,
 			);
 			path = macOS;
 			sourceTree = "<group>";
@@ -557,6 +563,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				560FDA8EB7B9DE368869D155 /* Assets.xcassets in Resources */,
+				16FD91843DB787E92BBF41D6 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -574,6 +581,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9DF1151412A41AC8D2EDE2D5 /* Assets.xcassets in Resources */,
+				5AE42BE2CFBC1A90028E7C6C /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1008,6 +1016,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_KEY_WKWatchOnly = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runner";
 				PRODUCT_NAME = ControlKit;
 				SDKROOT = watchos;
@@ -1020,6 +1029,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_KEY_WKWatchOnly = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.smbcloud.xcrs-controlkit.watchos.runner";
 				PRODUCT_NAME = ControlKit;
 				SDKROOT = watchos;
