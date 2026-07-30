@@ -17,8 +17,8 @@ final class ControlKitRPCServer {
     private let host: String
 
     init() {
-        port = UInt16(ProcessInfo.processInfo.environment["DEVICEKIT_LISTEN_PORT"] ?? "12004") ?? 12004
-        host = ProcessInfo.processInfo.environment["DEVICEKIT_LISTEN_HOST"] ?? "127.0.0.1"
+        port = UInt16(ProcessInfo.processInfo.environment["CONTROLKIT_LISTEN_PORT"] ?? "12004") ?? 12004
+        host = ProcessInfo.processInfo.environment["CONTROLKIT_LISTEN_HOST"] ?? "127.0.0.1"
     }
 
     func start() async throws {

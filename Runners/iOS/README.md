@@ -5,5 +5,5 @@ testing project, not a SwiftPM target, and imports the public
 `XCRSControlKit` package for capability and request contracts.
 
 The runner exposes a small localhost JSON-RPC server to the Rust `xcrs`
-client using SwiftNIO's HTTP/1 server pipeline. It intentionally contains no
-DeviceKit source or private XCTest headers.
+client using SwiftNIO's HTTP/1 server pipeline. It is an independent
+ControlKit implementation with no private XCTest headers.

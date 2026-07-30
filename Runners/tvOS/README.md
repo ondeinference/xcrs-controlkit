@@ -6,4 +6,4 @@ testing project, not a SwiftPM target, and imports the public
 
 The runner exposes a localhost JSON-RPC server to the Rust `xcrs` client using
 SwiftNIO's HTTP/1 server pipeline. tvOS remote buttons are handled through
-`XCUIRemote`, with no DeviceKit source or private XCTest headers.
+`XCUIRemote`, with no private XCTest headers.
