@@ -13,6 +13,20 @@ private struct JSONRPCRequest {
 
 @MainActor
 final class ControlKitRPCServer {
+    private static let protocolVersion = 1
+    private static let supportedMethods = [
+        "device.apps.launch",
+        "device.apps.terminate",
+        "device.capabilities",
+        "device.dump.ui",
+        "device.info",
+        "device.io.button",
+        "device.io.click",
+        "device.io.spatial.tap",
+        "device.io.tap",
+        "device.io.text"
+    ]
+
     private let port: UInt16
     private let host: String
 
@@ -73,31 +87,35 @@ final class ControlKitRPCServer {
     private func dispatch(_ request: JSONRPCRequest) async throws -> Data {
         switch request.method {
         case "device.capabilities":
-            let platform: XCRSControlKitPlatform = {
-                #if os(tvOS)
-                return .tvOS
-                #elseif os(visionOS)
-                return .visionOS
-                #elseif os(macOS)
-                return .macOS
-                #elseif os(watchOS)
-                return .watchOS
-                #else
-                return .iOS
-                #endif
-            }()
             return try response(
                 result: [
-                    "platform": platform.rawValue,
-                    "capabilities": XCRSControlKitCapabilities.standard(for: platform).values.map(\.rawValue).sorted()
+                    "platform": Self.platform.rawValue,
+                    "capabilities": XCRSControlKitCapabilities.standard(for: Self.platform).values.map(\.rawValue).sorted(),
+                    "methods": Self.supportedMethods
                 ],
                 id: request.id
             )
         case "device.info":
             return try response(
-                result: ["port": port, "runner": "XCRSControlKit"],
+                result: [
+                    "port": port,
+                    "runner": "XCRSControlKit",
+                    "protocolVersion": Self.protocolVersion,
+                    "methods": Self.supportedMethods
+                ],
                 id: request.id
             )
+        case "device.dump.ui":
+            let bundleIdentifier = try stringParameter("bundleId", request.params)
+            let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
+            if request.params["format"] as? String == "debug" {
+                return try response(
+                    result: ["description": application.debugDescription],
+                    id: request.id
+                )
+            }
+            let hierarchy = try accessibilityHierarchy(application)
+            return try response(result: dictionary(hierarchy), id: request.id)
         case "device.apps.launch":
             let bundleIdentifier = try stringParameter("bundleId", request.params)
             let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
@@ -170,11 +188,41 @@ final class ControlKitRPCServer {
         }
     }
 
+    private static var platform: XCRSControlKitPlatform {
+        #if os(tvOS)
+        return .tvOS
+        #elseif os(visionOS)
+        return .visionOS
+        #elseif os(macOS)
+        return .macOS
+        #elseif os(watchOS)
+        return .watchOS
+        #else
+        return .iOS
+        #endif
+    }
+
     private func foregroundApplication(_ params: [String: Any]) -> XCUIApplication {
         if let bundleIdentifier = params["bundleId"] as? String {
             return XCUIApplication(bundleIdentifier: bundleIdentifier)
         }
         return XCUIApplication()
+    }
+
+    private func accessibilityHierarchy(
+        _ application: XCUIApplication
+    ) throws -> XCRSControlKitAccessibilityNode {
+        try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: application.debugDescription
+        )
+    }
+
+    private func dictionary(_ node: XCRSControlKitAccessibilityNode) throws -> [String: Any] {
+        let data = try JSONEncoder().encode(node)
+        guard let object = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
+            throw RunnerError.invalidAccessibilityHierarchy
+        }
+        return object
     }
 
     #if !os(tvOS)
@@ -283,12 +331,15 @@ private final class RPCHandler: ChannelInboundHandler {
 }
 
 private enum RunnerError: LocalizedError {
+    case invalidAccessibilityHierarchy
     case invalidParameter(String)
     case unsupportedButton(String)
     case unsupportedInteraction(String)
 
     var errorDescription: String? {
         switch self {
+        case .invalidAccessibilityHierarchy:
+            return "Could not serialize the accessibility hierarchy"
         case .invalidParameter(let name):
             return "Missing or invalid parameter: \(name)"
         case .unsupportedButton(let button):

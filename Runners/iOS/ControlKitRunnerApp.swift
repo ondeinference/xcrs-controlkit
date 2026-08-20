@@ -33,10 +33,7 @@ private struct ControlKitShowcaseView: View {
                                 .foregroundStyle(Color.controlKitCream.opacity(0.78))
                         }
                     }
-
-                    Text("A clean-room runner for reliable black-box testing across Apple platforms.")
-                        .font(.title2.weight(.medium))
-                        .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 32)
 
                     statusCard
                     informationCard
@@ -104,6 +101,7 @@ private struct ControlKitShowcaseView: View {
             Spacer()
             Text(value)
                 .fontWeight(.semibold)
+                .multilineTextAlignment(.trailing)
         }
     }
 }

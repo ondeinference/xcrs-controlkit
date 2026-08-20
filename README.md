@@ -22,7 +22,7 @@ Add the package URL to an Xcode project or Swift package:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ondeinference/xcrs-controlkit.git", from: "0.1.0")
+    .package(url: "https://github.com/ondeinference/xcrs-controlkit.git", from: "1.0.0")
 ]
 ```
 
