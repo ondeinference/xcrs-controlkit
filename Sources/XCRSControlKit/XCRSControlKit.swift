@@ -320,19 +320,11 @@ public enum XCRSControlKitAccessibilityParser {
         }
 
         var index = valueStart
-        var escaped = false
         while index < line.endIndex {
             let character = line[index]
-            if character == "'", !escaped {
-                let nextIndex = line.index(after: index)
-                if nextIndex == line.endIndex || line[nextIndex] == "," {
-                    let value = String(line[valueStart..<index])
-                    return value.isEmpty ? nil : value
-                }
-            }
-            escaped = character == "\\" && !escaped
-            if character != "\\" {
-                escaped = false
+            if character == "'", isClosingQuote(at: index, in: line) {
+                let value = String(line[valueStart..<index])
+                return value.isEmpty ? nil : value
             }
             index = line.index(after: index)
         }
@@ -347,14 +339,12 @@ public enum XCRSControlKitAccessibilityParser {
         var segmentStart = line.startIndex
         var index = line.startIndex
         var quoted = false
-        var escaped = false
 
         while index < line.endIndex {
             let character = line[index]
-            if character == "'", !escaped {
+            if character == "'" {
                 if quoted {
-                    let nextIndex = line.index(after: index)
-                    if nextIndex == line.endIndex || line[nextIndex] == "," {
+                    if isClosingQuote(at: index, in: line) {
                         quoted = false
                     }
                 } else {
@@ -366,14 +356,35 @@ public enum XCRSControlKitAccessibilityParser {
                 }
                 segmentStart = line.index(after: index)
             }
-            escaped = character == "\\" && !escaped
-            if character != "\\" {
-                escaped = false
-            }
             index = line.index(after: index)
         }
 
         return line[segmentStart...].trimmingCharacters(in: .whitespaces) == attribute
+    }
+
+    private static func isClosingQuote(
+        at quoteIndex: String.Index,
+        in line: String
+    ) -> Bool {
+        var backslashCount = 0
+        var index = quoteIndex
+        while index > line.startIndex {
+            let previousIndex = line.index(before: index)
+            guard line[previousIndex] == "\\" else {
+                break
+            }
+            backslashCount += 1
+            index = previousIndex
+        }
+        guard backslashCount.isMultiple(of: 2) else {
+            return false
+        }
+
+        index = line.index(after: quoteIndex)
+        while index < line.endIndex, line[index].isWhitespace {
+            index = line.index(after: index)
+        }
+        return index == line.endIndex || line[index] == "," || line[index] == "}"
     }
 }
 

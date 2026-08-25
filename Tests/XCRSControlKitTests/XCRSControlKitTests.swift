@@ -118,6 +118,42 @@ final class XCRSControlKitTests: XCTestCase {
         XCTAssertEqual(button.enabled, false)
         XCTAssertEqual(button.selected, true)
         XCTAssertEqual(button.focused, true)
+        XCTAssertEqual(root.enabled, true)
+    }
+
+    func testAccessibilityParserKeepsSiblingsAtTheSameIndentation() throws {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1
+            Button, 0x2, label: 'First'
+            Button, 0x3, label: 'Second'
+        Path to element:
+        """
+
+        let root = try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: hierarchy
+        )
+
+        XCTAssertEqual(root.children.map(\.label), ["First", "Second"])
+        XCTAssertTrue(root.children.allSatisfy(\.children.isEmpty))
+    }
+
+    func testAccessibilityParserReadsEscapedAndBraceTerminatedAttributes() throws {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1, label: 'Sample'}
+            Button, 0x2, label: 'It\\'s ready', Selected
+        Path to element:
+        """
+
+        let root = try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: hierarchy
+        )
+
+        XCTAssertEqual(root.label, "Sample")
+        let button = try XCTUnwrap(root.children.first)
+        XCTAssertEqual(button.label, "It\\'s ready")
+        XCTAssertEqual(button.selected, true)
     }
 
     func testAccessibilityParserRejectsMultipleRootElements() {

@@ -108,10 +108,10 @@ final class ControlKitRPCServer {
         case "device.dump.ui":
             let bundleIdentifier = try stringParameter("bundleId", request.params)
             let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
-            guard application.state == .runningForeground else {
-                throw RunnerError.applicationNotInForeground(bundleIdentifier)
-            }
-            let hierarchy = try accessibilityHierarchy(application)
+            let hierarchy = try accessibilityHierarchy(
+                application,
+                bundleIdentifier: bundleIdentifier
+            )
             return try response(result: dictionary(hierarchy), id: request.id)
         case "device.apps.launch":
             let bundleIdentifier = try stringParameter("bundleId", request.params)
@@ -207,10 +207,18 @@ final class ControlKitRPCServer {
     }
 
     private func accessibilityHierarchy(
-        _ application: XCUIApplication
+        _ application: XCUIApplication,
+        bundleIdentifier: String
     ) throws -> XCRSControlKitAccessibilityNode {
-        try XCRSControlKitAccessibilityParser.parse(
-            debugDescription: application.debugDescription
+        guard application.state == .runningForeground else {
+            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+        }
+        let debugDescription = application.debugDescription
+        guard application.state == .runningForeground else {
+            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+        }
+        return try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: debugDescription
         )
     }
 
