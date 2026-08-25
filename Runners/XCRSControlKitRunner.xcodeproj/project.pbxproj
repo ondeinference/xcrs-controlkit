@@ -94,24 +94,24 @@
 
 /* Begin PBXFileReference section */
 		06ABEBF2BC26029BF199977C /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		08CFC4F37BB1C3444B435EC8 /* ControlKit-tvOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-tvOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0AF2C936A45BEF3E427051E8 /* ControlKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D9522A60419FFC7F405FE88 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		243F4A0C8F7567EDEEE21282 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = "ControlKit-visionOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A9F28238A4519F25B302BD1 /* ControlKit-visionOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; name = "ControlKit-visionOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ControlKit-macOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DFF0D230E8E7D8DF4E8AF86 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		40A16F9F72DA073E165B0149 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		511F38504131E988C4903A29 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		5591C7FEF7205CCA88C10507 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
-		5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ControlKit-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ControlKit-macOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A89F5048B0CAE4988FB1203 /* ControlKit-visionOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-visionOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FB5CFB03469D6F6B4B90338 /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		898E84DC2CE45F3463AA7E5D /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		8A09FB52496A952CB13C163B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = "ControlKit-tvOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		976BFE251DB7DC2248C8D0E7 /* ControlKitRPCServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRPCServer.swift; sourceTree = "<group>"; };
-		9D200812648C48867D12D43D /* ControlKit-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ControlKit-watchOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D200812648C48867D12D43D /* ControlKit-watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = "ControlKit-watchOS.app"; path = ControlKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A32F608A3A429B81416D59FC /* ControlKitRunnerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlKitRunnerApp.swift; sourceTree = "<group>"; };
 		B4A7C1166461333A52056112 /* ControlKit-macOS-UITests.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ControlKit-macOS-UITests.entitlements"; sourceTree = "<group>"; };
 		CD648878AF85C1F1CC002EC1 /* ControlKit-watchOS-UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ControlKit-watchOS-UITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,7 +206,7 @@
 			isa = PBXGroup;
 			children = (
 				F93B11596E43814F825966AC /* ControlKit-iOS-UITests.xctest */,
-				0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */,
+				0AF2C936A45BEF3E427051E8 /* ControlKit.app */,
 				3686EC34042E55BB49FCE937 /* ControlKit-macOS-UITests.xctest */,
 				5A26B9285A83B3312F79B286 /* ControlKit-macOS.app */,
 				904DF2F8A56B8FA1C5EE1431 /* ControlKit-tvOS-UITests.xctest */,
@@ -423,7 +423,7 @@
 			packageProductDependencies = (
 			);
 			productName = "ControlKit-iOS";
-			productReference = 0AF2C936A45BEF3E427051E8 /* ControlKit-iOS.app */;
+			productReference = 0AF2C936A45BEF3E427051E8 /* ControlKit.app */;
 			productType = "com.apple.product-type.application";
 		};
 		BBEDFC1F8A411D980AF3432F /* ControlKit-macOS-UITests */ = {
@@ -718,6 +718,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -753,6 +754,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UIRequiresFullScreen = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -886,7 +888,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1137,7 +1142,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = ControlKit;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;

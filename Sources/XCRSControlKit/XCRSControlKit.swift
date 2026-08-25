@@ -111,6 +111,283 @@ public struct XCRSControlKitCapabilities: Codable, Equatable, Sendable {
     }
 }
 
+/// A screen-space rectangle reported by the accessibility hierarchy.
+public struct XCRSControlKitRect: Codable, Equatable, Sendable {
+    public let x: Double
+    public let y: Double
+    public let width: Double
+    public let height: Double
+
+    public init(x: Double, y: Double, width: Double, height: Double) {
+        self.x = x
+        self.y = y
+        self.width = width
+        self.height = height
+    }
+}
+
+/// A transport-stable accessibility element returned by `device.dump.ui`.
+public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
+    public let type: String
+    public let label: String?
+    public let name: String?
+    public let value: String?
+    public let placeholderValue: String?
+    public let rawIdentifier: String?
+    public let rect: XCRSControlKitRect
+    public let depth: Int?
+    public let enabled: Bool?
+    public let selected: Bool?
+    public let focused: Bool?
+    public let hittable: Bool?
+    public let children: [XCRSControlKitAccessibilityNode]
+
+    public init(
+        type: String,
+        label: String? = nil,
+        name: String? = nil,
+        value: String? = nil,
+        placeholderValue: String? = nil,
+        rawIdentifier: String? = nil,
+        rect: XCRSControlKitRect,
+        depth: Int? = nil,
+        enabled: Bool? = nil,
+        selected: Bool? = nil,
+        focused: Bool? = nil,
+        hittable: Bool? = nil,
+        children: [XCRSControlKitAccessibilityNode] = []
+    ) {
+        self.type = type
+        self.label = label
+        self.name = name
+        self.value = value
+        self.placeholderValue = placeholderValue
+        self.rawIdentifier = rawIdentifier
+        self.rect = rect
+        self.depth = depth
+        self.enabled = enabled
+        self.selected = selected
+        self.focused = focused
+        self.hittable = hittable
+        self.children = children
+    }
+}
+
+/// Converts XCTest's single-snapshot hierarchy into ControlKit nodes.
+public enum XCRSControlKitAccessibilityParser {
+    private struct ParsedNode {
+        let node: XCRSControlKitAccessibilityNode
+        let indentation: Int
+    }
+
+    public static func parse(
+        debugDescription: String
+    ) throws -> XCRSControlKitAccessibilityNode {
+        let lines = debugDescription.components(separatedBy: .newlines)
+        guard
+            let subtreeStart = lines.firstIndex(of: "Element subtree:"),
+            let subtreeEnd = lines[subtreeStart...].firstIndex(of: "Path to element:")
+        else {
+            throw XCRSControlKitError.invalidRequest(
+                "XCTest did not return an accessibility subtree"
+            )
+        }
+
+        let nodes = lines[lines.index(after: subtreeStart)..<subtreeEnd]
+            .compactMap(parseLine)
+        guard !nodes.isEmpty else {
+            throw XCRSControlKitError.invalidRequest(
+                "XCTest returned an empty accessibility subtree"
+            )
+        }
+
+        var index = 0
+        let root = tree(from: nodes, at: &index, depth: 0)
+        guard index == nodes.endIndex else {
+            throw XCRSControlKitError.invalidRequest(
+                "XCTest returned multiple root accessibility elements"
+            )
+        }
+        return root
+    }
+
+    private static func parseLine(
+        _ line: String
+    ) -> ParsedNode? {
+        let indentation = line.prefix(while: { $0 == " " }).count
+        var content = line.trimmingCharacters(in: .whitespaces)
+        if content.first == "→" {
+            content.removeFirst()
+        }
+        guard let typeEnd = content.firstIndex(of: ",") else {
+            return nil
+        }
+
+        let type = String(content[..<typeEnd])
+        let identifier = quotedAttribute("identifier", in: content)
+        let rect = rectangle(in: content) ?? XCRSControlKitRect(
+            x: 0,
+            y: 0,
+            width: 0,
+            height: 0
+        )
+        return ParsedNode(
+            node: XCRSControlKitAccessibilityNode(
+                type: type,
+                label: quotedAttribute("label", in: content),
+                name: identifier,
+                value: quotedAttribute("value", in: content),
+                placeholderValue: quotedAttribute("placeholderValue", in: content),
+                rawIdentifier: identifier,
+                rect: rect,
+                enabled: !hasStandaloneAttribute("Disabled", in: content),
+                selected: hasStandaloneAttribute("Selected", in: content),
+                focused: hasStandaloneAttribute("Focused", in: content)
+            ),
+            indentation: indentation
+        )
+    }
+
+    private static func tree(
+        from nodes: [ParsedNode],
+        at index: inout Int,
+        depth: Int
+    ) -> XCRSControlKitAccessibilityNode {
+        let parsedNode = nodes[index]
+        index += 1
+
+        var children: [XCRSControlKitAccessibilityNode] = []
+        while index < nodes.count, nodes[index].indentation > parsedNode.indentation {
+            children.append(tree(from: nodes, at: &index, depth: depth + 1))
+        }
+
+        let node = parsedNode.node
+        return XCRSControlKitAccessibilityNode(
+            type: node.type,
+            label: node.label,
+            name: node.name,
+            value: node.value,
+            placeholderValue: node.placeholderValue,
+            rawIdentifier: node.rawIdentifier,
+            rect: node.rect,
+            depth: depth,
+            enabled: node.enabled,
+            selected: node.selected,
+            focused: node.focused,
+            hittable: node.hittable,
+            children: children
+        )
+    }
+
+    private static func rectangle(in line: String) -> XCRSControlKitRect? {
+        guard
+            let rectangleStart = line.range(of: "{{")?.upperBound,
+            let rectangleEnd = line[rectangleStart...].range(of: "}}")?.lowerBound
+        else {
+            return nil
+        }
+
+        let components = line[rectangleStart..<rectangleEnd]
+            .split(whereSeparator: { character in
+                character == "{" || character == "}" || character == ","
+            })
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        guard
+            components.count == 4,
+            let x = Double(components[0]),
+            let y = Double(components[1]),
+            let width = Double(components[2]),
+            let height = Double(components[3])
+        else {
+            return nil
+        }
+        return XCRSControlKitRect(
+            x: x,
+            y: y,
+            width: width,
+            height: height
+        )
+    }
+
+    private static func quotedAttribute(
+        _ name: String,
+        in line: String
+    ) -> String? {
+        let prefix = "\(name): '"
+        guard let valueStart = line.range(of: prefix)?.upperBound else {
+            return nil
+        }
+
+        var index = valueStart
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'", isClosingQuote(at: index, in: line) {
+                let value = String(line[valueStart..<index])
+                return value.isEmpty ? nil : value
+            }
+            index = line.index(after: index)
+        }
+
+        return nil
+    }
+
+    private static func hasStandaloneAttribute(
+        _ attribute: String,
+        in line: String
+    ) -> Bool {
+        var segmentStart = line.startIndex
+        var index = line.startIndex
+        var quoted = false
+
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'" {
+                if quoted {
+                    if isClosingQuote(at: index, in: line) {
+                        quoted = false
+                    }
+                } else {
+                    quoted = true
+                }
+            } else if character == ",", !quoted {
+                if line[segmentStart..<index].trimmingCharacters(in: .whitespaces) == attribute {
+                    return true
+                }
+                segmentStart = line.index(after: index)
+            }
+            index = line.index(after: index)
+        }
+
+        return line[segmentStart...].trimmingCharacters(in: .whitespaces) == attribute
+    }
+
+    private static func isClosingQuote(
+        at quoteIndex: String.Index,
+        in line: String
+    ) -> Bool {
+        var backslashCount = 0
+        var index = quoteIndex
+        while index > line.startIndex {
+            let previousIndex = line.index(before: index)
+            guard line[previousIndex] == "\\" else {
+                break
+            }
+            backslashCount += 1
+            index = previousIndex
+        }
+        guard backslashCount.isMultiple(of: 2) else {
+            return false
+        }
+
+        index = line.index(after: quoteIndex)
+        while index < line.endIndex, line[index].isWhitespace {
+            index = line.index(after: index)
+        }
+        return index == line.endIndex || line[index] == "," || line[index] == "}"
+    }
+}
+
 /// A transport-neutral command sent to a runner.
 public struct XCRSControlKitRequest: Codable, Equatable, Sendable {
     public let id: String
