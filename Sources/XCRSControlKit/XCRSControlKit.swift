@@ -177,12 +177,8 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
 public enum XCRSControlKitAccessibilityParser {
     private struct ParsedNode {
         let node: XCRSControlKitAccessibilityNode
-        let depth: Int
+        let indentation: Int
     }
-
-    private static let rectangleExpression = try? NSRegularExpression(
-        pattern: #"\{\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\},\s*\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\}\}"#
-    )
 
     public static func parse(
         debugDescription: String
@@ -206,7 +202,13 @@ public enum XCRSControlKitAccessibilityParser {
         }
 
         var index = 0
-        return tree(from: nodes, at: &index)
+        let root = tree(from: nodes, at: &index, depth: 0)
+        guard index == nodes.endIndex else {
+            throw XCRSControlKitError.invalidRequest(
+                "XCTest returned multiple root accessibility elements"
+            )
+        }
+        return root
     }
 
     private static func parseLine(
@@ -229,7 +231,6 @@ public enum XCRSControlKitAccessibilityParser {
             width: 0,
             height: 0
         )
-        let depth = indentation / 2
         return ParsedNode(
             node: XCRSControlKitAccessibilityNode(
                 type: type,
@@ -239,25 +240,25 @@ public enum XCRSControlKitAccessibilityParser {
                 placeholderValue: quotedAttribute("placeholderValue", in: content),
                 rawIdentifier: identifier,
                 rect: rect,
-                depth: depth,
                 enabled: !hasStandaloneAttribute("Disabled", in: content),
                 selected: hasStandaloneAttribute("Selected", in: content),
                 focused: hasStandaloneAttribute("Focused", in: content)
             ),
-            depth: depth
+            indentation: indentation
         )
     }
 
     private static func tree(
         from nodes: [ParsedNode],
-        at index: inout Int
+        at index: inout Int,
+        depth: Int
     ) -> XCRSControlKitAccessibilityNode {
         let parsedNode = nodes[index]
         index += 1
 
         var children: [XCRSControlKitAccessibilityNode] = []
-        while index < nodes.count, nodes[index].depth > parsedNode.depth {
-            children.append(tree(from: nodes, at: &index))
+        while index < nodes.count, nodes[index].indentation > parsedNode.indentation {
+            children.append(tree(from: nodes, at: &index, depth: depth + 1))
         }
 
         let node = parsedNode.node
@@ -269,7 +270,7 @@ public enum XCRSControlKitAccessibilityParser {
             placeholderValue: node.placeholderValue,
             rawIdentifier: node.rawIdentifier,
             rect: node.rect,
-            depth: node.depth,
+            depth: depth,
             enabled: node.enabled,
             selected: node.selected,
             focused: node.focused,
@@ -280,30 +281,32 @@ public enum XCRSControlKitAccessibilityParser {
 
     private static func rectangle(in line: String) -> XCRSControlKitRect? {
         guard
-            let expression = rectangleExpression,
-            let match = expression.firstMatch(
-                in: line,
-                range: NSRange(line.startIndex..., in: line)
-            ),
-            match.numberOfRanges == 5
+            let rectangleStart = line.range(of: "{{")?.upperBound,
+            let rectangleEnd = line[rectangleStart...].range(of: "}}")?.lowerBound
         else {
             return nil
         }
 
-        let values = (1..<5).compactMap { index -> Double? in
-            guard let range = Range(match.range(at: index), in: line) else {
-                return nil
-            }
-            return Double(line[range])
-        }
-        guard values.count == 4 else {
+        let components = line[rectangleStart..<rectangleEnd]
+            .split(whereSeparator: { character in
+                character == "{" || character == "}" || character == ","
+            })
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+        guard
+            components.count == 4,
+            let x = Double(components[0]),
+            let y = Double(components[1]),
+            let width = Double(components[2]),
+            let height = Double(components[3])
+        else {
             return nil
         }
         return XCRSControlKitRect(
-            x: values[0],
-            y: values[1],
-            width: values[2],
-            height: values[3]
+            x: x,
+            y: y,
+            width: width,
+            height: height
         )
     }
 

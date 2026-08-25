@@ -93,7 +93,9 @@ final class XCRSControlKitTests: XCTestCase {
         XCTAssertEqual(button.label, "Hem")
         XCTAssertEqual(button.rawIdentifier, "Start")
         XCTAssertEqual(button.rect.x, 576)
-        XCTAssertGreaterThan(button.depth ?? 0, root.depth ?? 0)
+        XCTAssertEqual(root.depth, 0)
+        XCTAssertEqual(window.depth, 1)
+        XCTAssertEqual(button.depth, 2)
         XCTAssertEqual(button.selected, false)
         XCTAssertEqual(button.focused, true)
     }
@@ -116,5 +118,25 @@ final class XCRSControlKitTests: XCTestCase {
         XCTAssertEqual(button.enabled, false)
         XCTAssertEqual(button.selected, true)
         XCTAssertEqual(button.focused, true)
+    }
+
+    func testAccessibilityParserRejectsMultipleRootElements() {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1
+         →Window, 0x2
+        Path to element:
+        """
+
+        XCTAssertThrowsError(
+            try XCRSControlKitAccessibilityParser.parse(
+                debugDescription: hierarchy
+            )
+        ) { error in
+            XCTAssertEqual(
+                error as? XCRSControlKitError,
+                .invalidRequest("XCTest returned multiple root accessibility elements")
+            )
+        }
     }
 }
