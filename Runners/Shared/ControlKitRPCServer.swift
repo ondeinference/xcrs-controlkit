@@ -108,6 +108,9 @@ final class ControlKitRPCServer {
         case "device.dump.ui":
             let bundleIdentifier = try stringParameter("bundleId", request.params)
             let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
+            guard application.state != .notRunning else {
+                throw RunnerError.applicationNotRunning(bundleIdentifier)
+            }
             if request.params["format"] as? String == "debug" {
                 return try response(
                     result: ["description": application.debugDescription],
@@ -331,6 +334,7 @@ private final class RPCHandler: ChannelInboundHandler {
 }
 
 private enum RunnerError: LocalizedError {
+    case applicationNotRunning(String)
     case invalidAccessibilityHierarchy
     case invalidParameter(String)
     case unsupportedButton(String)
@@ -338,6 +342,8 @@ private enum RunnerError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
+        case .applicationNotRunning(let bundleIdentifier):
+            return "Application is not running: \(bundleIdentifier)"
         case .invalidAccessibilityHierarchy:
             return "Could not serialize the accessibility hierarchy"
         case .invalidParameter(let name):

@@ -51,6 +51,7 @@ final class XCRSControlKitTests: XCTestCase {
             rect: XCRSControlKitRect(x: 100, y: 200, width: 80, height: 40),
             enabled: true,
             selected: false,
+            focused: false,
             hittable: true
         )
 
@@ -69,13 +70,13 @@ final class XCRSControlKitTests: XCTestCase {
 
     func testAccessibilityParserReadsSingleXCTestSnapshot() throws {
         let hierarchy = """
-        Attributes: Application, 0x1, pid: 42, label: 'Viaplay'
+        Attributes: Application, 0x1, pid: 42, label: 'Sample App'
         Element subtree:
-         →Application, 0x1, pid: 42, label: 'Viaplay'
+         →Application, 0x1, pid: 42, label: 'Sample App'
             Window (Main), 0x2, {{0.0, 0.0}, {1920.0, 1080.0}}
               Button, 0x3, {{576.0, 64.0}, {63.0, 32.0}}, identifier: 'Start', label: 'Hem', Focused
         Path to element:
-         →Application, 0x1, pid: 42, label: 'Viaplay'
+         →Application, 0x1, pid: 42, label: 'Sample App'
         """
 
         let root = try XCRSControlKitAccessibilityParser.parse(
@@ -83,13 +84,37 @@ final class XCRSControlKitTests: XCTestCase {
         )
 
         XCTAssertEqual(root.type, "Application")
-        XCTAssertEqual(root.label, "Viaplay")
-        XCTAssertEqual(root.children.count, 2)
-        XCTAssertEqual(root.children[1].type, "Button")
-        XCTAssertEqual(root.children[1].label, "Hem")
-        XCTAssertEqual(root.children[1].rawIdentifier, "Start")
-        XCTAssertEqual(root.children[1].rect.x, 576)
-        XCTAssertGreaterThan(root.children[1].depth ?? 0, root.depth ?? 0)
-        XCTAssertEqual(root.children[1].selected, true)
+        XCTAssertEqual(root.label, "Sample App")
+        XCTAssertEqual(root.children.count, 1)
+        let window = try XCTUnwrap(root.children.first)
+        XCTAssertEqual(window.type, "Window (Main)")
+        let button = try XCTUnwrap(window.children.first)
+        XCTAssertEqual(button.type, "Button")
+        XCTAssertEqual(button.label, "Hem")
+        XCTAssertEqual(button.rawIdentifier, "Start")
+        XCTAssertEqual(button.rect.x, 576)
+        XCTAssertGreaterThan(button.depth ?? 0, root.depth ?? 0)
+        XCTAssertEqual(button.selected, false)
+        XCTAssertEqual(button.focused, true)
+    }
+
+    func testAccessibilityParserReadsQuotedAttributesAndStates() throws {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1, label: 'Disabled, Selected, Focused'
+            Button, 0x2, label: 'O'Brien', Disabled, Selected, Focused
+        Path to element:
+        """
+
+        let root = try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: hierarchy
+        )
+
+        XCTAssertEqual(root.label, "Disabled, Selected, Focused")
+        let button = try XCTUnwrap(root.children.first)
+        XCTAssertEqual(button.label, "O'Brien")
+        XCTAssertEqual(button.enabled, false)
+        XCTAssertEqual(button.selected, true)
+        XCTAssertEqual(button.focused, true)
     }
 }

@@ -138,6 +138,7 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
     public let depth: Int?
     public let enabled: Bool?
     public let selected: Bool?
+    public let focused: Bool?
     public let hittable: Bool?
     public let children: [XCRSControlKitAccessibilityNode]
 
@@ -152,6 +153,7 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
         depth: Int? = nil,
         enabled: Bool? = nil,
         selected: Bool? = nil,
+        focused: Bool? = nil,
         hittable: Bool? = nil,
         children: [XCRSControlKitAccessibilityNode] = []
     ) {
@@ -165,6 +167,7 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
         self.depth = depth
         self.enabled = enabled
         self.selected = selected
+        self.focused = focused
         self.hittable = hittable
         self.children = children
     }
@@ -172,6 +175,15 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
 
 /// Converts XCTest's single-snapshot hierarchy into ControlKit nodes.
 public enum XCRSControlKitAccessibilityParser {
+    private struct ParsedNode {
+        let node: XCRSControlKitAccessibilityNode
+        let depth: Int
+    }
+
+    private static let rectangleExpression = try? NSRegularExpression(
+        pattern: #"\{\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\},\s*\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\}\}"#
+    )
+
     public static func parse(
         debugDescription: String
     ) throws -> XCRSControlKitAccessibilityNode {
@@ -187,31 +199,19 @@ public enum XCRSControlKitAccessibilityParser {
 
         let nodes = lines[lines.index(after: subtreeStart)..<subtreeEnd]
             .compactMap(parseLine)
-        guard let root = nodes.first else {
+        guard !nodes.isEmpty else {
             throw XCRSControlKitError.invalidRequest(
                 "XCTest returned an empty accessibility subtree"
             )
         }
 
-        return XCRSControlKitAccessibilityNode(
-            type: root.type,
-            label: root.label,
-            name: root.name,
-            value: root.value,
-            placeholderValue: root.placeholderValue,
-            rawIdentifier: root.rawIdentifier,
-            rect: root.rect,
-            depth: root.depth,
-            enabled: root.enabled,
-            selected: root.selected,
-            hittable: root.hittable,
-            children: Array(nodes.dropFirst())
-        )
+        var index = 0
+        return tree(from: nodes, at: &index)
     }
 
     private static func parseLine(
         _ line: String
-    ) -> XCRSControlKitAccessibilityNode? {
+    ) -> ParsedNode? {
         let indentation = line.prefix(while: { $0 == " " }).count
         var content = line.trimmingCharacters(in: .whitespaces)
         if content.first == "→" {
@@ -229,24 +229,58 @@ public enum XCRSControlKitAccessibilityParser {
             width: 0,
             height: 0
         )
+        let depth = indentation / 2
+        return ParsedNode(
+            node: XCRSControlKitAccessibilityNode(
+                type: type,
+                label: quotedAttribute("label", in: content),
+                name: identifier,
+                value: quotedAttribute("value", in: content),
+                placeholderValue: quotedAttribute("placeholderValue", in: content),
+                rawIdentifier: identifier,
+                rect: rect,
+                depth: depth,
+                enabled: !hasStandaloneAttribute("Disabled", in: content),
+                selected: hasStandaloneAttribute("Selected", in: content),
+                focused: hasStandaloneAttribute("Focused", in: content)
+            ),
+            depth: depth
+        )
+    }
+
+    private static func tree(
+        from nodes: [ParsedNode],
+        at index: inout Int
+    ) -> XCRSControlKitAccessibilityNode {
+        let parsedNode = nodes[index]
+        index += 1
+
+        var children: [XCRSControlKitAccessibilityNode] = []
+        while index < nodes.count, nodes[index].depth > parsedNode.depth {
+            children.append(tree(from: nodes, at: &index))
+        }
+
+        let node = parsedNode.node
         return XCRSControlKitAccessibilityNode(
-            type: type,
-            label: quotedAttribute("label", in: content),
-            name: identifier,
-            value: quotedAttribute("value", in: content),
-            placeholderValue: quotedAttribute("placeholderValue", in: content),
-            rawIdentifier: identifier,
-            rect: rect,
-            depth: indentation / 2,
-            enabled: !content.contains(", Disabled"),
-            selected: content.contains(", Selected") || content.contains(", Focused")
+            type: node.type,
+            label: node.label,
+            name: node.name,
+            value: node.value,
+            placeholderValue: node.placeholderValue,
+            rawIdentifier: node.rawIdentifier,
+            rect: node.rect,
+            depth: node.depth,
+            enabled: node.enabled,
+            selected: node.selected,
+            focused: node.focused,
+            hittable: node.hittable,
+            children: children
         )
     }
 
     private static func rectangle(in line: String) -> XCRSControlKitRect? {
-        let pattern = #"\{\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\},\s*\{(-?\d+(?:\.\d+)?),\s*(-?\d+(?:\.\d+)?)\}\}"#
         guard
-            let expression = try? NSRegularExpression(pattern: pattern),
+            let expression = rectangleExpression,
             let match = expression.firstMatch(
                 in: line,
                 range: NSRange(line.startIndex..., in: line)
@@ -277,20 +311,66 @@ public enum XCRSControlKitAccessibilityParser {
         _ name: String,
         in line: String
     ) -> String? {
-        let escapedName = NSRegularExpression.escapedPattern(for: name)
-        let pattern = "\(escapedName): '(.*?)'(?=,|$)"
-        guard
-            let expression = try? NSRegularExpression(pattern: pattern),
-            let match = expression.firstMatch(
-                in: line,
-                range: NSRange(line.startIndex..., in: line)
-            ),
-            let valueRange = Range(match.range(at: 1), in: line)
-        else {
+        let prefix = "\(name): '"
+        guard let valueStart = line.range(of: prefix)?.upperBound else {
             return nil
         }
-        let value = String(line[valueRange])
-        return value.isEmpty ? nil : value
+
+        var index = valueStart
+        var escaped = false
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'", !escaped {
+                let nextIndex = line.index(after: index)
+                if nextIndex == line.endIndex || line[nextIndex] == "," {
+                    let value = String(line[valueStart..<index])
+                    return value.isEmpty ? nil : value
+                }
+            }
+            escaped = character == "\\" && !escaped
+            if character != "\\" {
+                escaped = false
+            }
+            index = line.index(after: index)
+        }
+
+        return nil
+    }
+
+    private static func hasStandaloneAttribute(
+        _ attribute: String,
+        in line: String
+    ) -> Bool {
+        var segmentStart = line.startIndex
+        var index = line.startIndex
+        var quoted = false
+        var escaped = false
+
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'", !escaped {
+                if quoted {
+                    let nextIndex = line.index(after: index)
+                    if nextIndex == line.endIndex || line[nextIndex] == "," {
+                        quoted = false
+                    }
+                } else {
+                    quoted = true
+                }
+            } else if character == ",", !quoted {
+                if line[segmentStart..<index].trimmingCharacters(in: .whitespaces) == attribute {
+                    return true
+                }
+                segmentStart = line.index(after: index)
+            }
+            escaped = character == "\\" && !escaped
+            if character != "\\" {
+                escaped = false
+            }
+            index = line.index(after: index)
+        }
+
+        return line[segmentStart...].trimmingCharacters(in: .whitespaces) == attribute
     }
 }
 
