@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct ControlKitRunnerApp: App {
+    // MARK: - Internal
+
     var body: some Scene {
         WindowGroup {
             ControlKitShowcaseView()
@@ -10,6 +12,8 @@ struct ControlKitRunnerApp: App {
 }
 
 private struct ControlKitShowcaseView: View {
+    // MARK: - Internal
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -32,6 +36,8 @@ private struct ControlKitShowcaseView: View {
         .background(Color.controlKitGreen.ignoresSafeArea())
         .foregroundStyle(Color.controlKitCream)
     }
+
+    // MARK: - Private
 
     private var logo: some View {
         Text("XC\nRS")

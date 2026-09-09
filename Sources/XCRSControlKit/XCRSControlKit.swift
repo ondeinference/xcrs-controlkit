@@ -28,6 +28,8 @@ public enum XCRSControlKitCapability: String, Codable, CaseIterable, Sendable {
 
 /// A simulator or device controlled by a runner.
 public struct XCRSControlKitTarget: Codable, Equatable, Sendable {
+    // MARK: - Public
+
     public let platform: XCRSControlKitPlatform
     public let identifier: String
     public let name: String?
@@ -45,6 +47,8 @@ public struct XCRSControlKitTarget: Codable, Equatable, Sendable {
 
 /// The capabilities advertised by a runner.
 public struct XCRSControlKitCapabilities: Codable, Equatable, Sendable {
+    // MARK: - Public
+
     public let platform: XCRSControlKitPlatform
     public let values: Set<XCRSControlKitCapability>
 
@@ -113,6 +117,8 @@ public struct XCRSControlKitCapabilities: Codable, Equatable, Sendable {
 
 /// A screen-space rectangle reported by the accessibility hierarchy.
 public struct XCRSControlKitRect: Codable, Equatable, Sendable {
+    // MARK: - Public
+
     public let x: Double
     public let y: Double
     public let width: Double
@@ -128,6 +134,8 @@ public struct XCRSControlKitRect: Codable, Equatable, Sendable {
 
 /// A transport-stable accessibility element returned by `device.dump.ui`.
 public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
+    // MARK: - Public
+
     public let type: String
     public let label: String?
     public let name: String?
@@ -175,10 +183,7 @@ public struct XCRSControlKitAccessibilityNode: Codable, Equatable, Sendable {
 
 /// Converts XCTest's single-snapshot hierarchy into ControlKit nodes.
 public enum XCRSControlKitAccessibilityParser {
-    private struct ParsedNode {
-        let node: XCRSControlKitAccessibilityNode
-        let indentation: Int
-    }
+    // MARK: - Public
 
     public static func parse(
         debugDescription: String
@@ -209,6 +214,13 @@ public enum XCRSControlKitAccessibilityParser {
             )
         }
         return root
+    }
+
+    // MARK: - Private
+
+    private struct ParsedNode {
+        let node: XCRSControlKitAccessibilityNode
+        let indentation: Int
     }
 
     private static func parseLine(
@@ -390,6 +402,8 @@ public enum XCRSControlKitAccessibilityParser {
 
 /// A transport-neutral command sent to a runner.
 public struct XCRSControlKitRequest: Codable, Equatable, Sendable {
+    // MARK: - Public
+
     public let id: String
     public let method: String
     public let parameters: [String: String]

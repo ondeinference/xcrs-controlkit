@@ -13,22 +13,7 @@ private struct JSONRPCRequest {
 
 @MainActor
 final class ControlKitRPCServer {
-    private static let protocolVersion = 1
-    private static let supportedMethods = [
-        "device.apps.launch",
-        "device.apps.terminate",
-        "device.capabilities",
-        "device.dump.ui",
-        "device.info",
-        "device.io.button",
-        "device.io.click",
-        "device.io.spatial.tap",
-        "device.io.tap",
-        "device.io.text"
-    ]
-
-    private let port: UInt16
-    private let host: String
+    // MARK: - Internal
 
     init() {
         port = UInt16(ProcessInfo.processInfo.environment["CONTROLKIT_LISTEN_PORT"] ?? "12004") ?? 12004
@@ -59,6 +44,40 @@ final class ControlKitRPCServer {
             .get()
         try await channel.closeFuture.get()
     }
+
+    // MARK: - Private
+
+    private static let protocolVersion = 1
+    private static let supportedMethods = [
+        "device.apps.launch",
+        "device.apps.terminate",
+        "device.capabilities",
+        "device.dump.ui",
+        "device.ui.tap",
+        "device.info",
+        "device.io.button",
+        "device.io.click",
+        "device.io.spatial.tap",
+        "device.io.tap",
+        "device.io.text"
+    ]
+
+    private static var platform: XCRSControlKitPlatform {
+        #if os(tvOS)
+        return .tvOS
+        #elseif os(visionOS)
+        return .visionOS
+        #elseif os(macOS)
+        return .macOS
+        #elseif os(watchOS)
+        return .watchOS
+        #else
+        return .iOS
+        #endif
+    }
+
+    private let port: UInt16
+    private let host: String
 
     private func handle(_ body: Data) async -> Data {
         do {
@@ -113,6 +132,15 @@ final class ControlKitRPCServer {
                 bundleIdentifier: bundleIdentifier
             )
             return try response(result: dictionary(hierarchy), id: request.id)
+        case "device.ui.tap":
+            let bundleIdentifier = try stringParameter("bundleId", request.params)
+            let element = try stringParameter("element", request.params)
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !element.isEmpty else {
+                throw RunnerError.invalidParameter("element")
+            }
+            try tapElement(named: element, in: bundleIdentifier)
+            return try response(result: ["success": true], id: request.id)
         case "device.apps.launch":
             let bundleIdentifier = try stringParameter("bundleId", request.params)
             let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
@@ -185,20 +213,6 @@ final class ControlKitRPCServer {
         }
     }
 
-    private static var platform: XCRSControlKitPlatform {
-        #if os(tvOS)
-        return .tvOS
-        #elseif os(visionOS)
-        return .visionOS
-        #elseif os(macOS)
-        return .macOS
-        #elseif os(watchOS)
-        return .watchOS
-        #else
-        return .iOS
-        #endif
-    }
-
     private func foregroundApplication(_ params: [String: Any]) -> XCUIApplication {
         if let bundleIdentifier = params["bundleId"] as? String {
             return XCUIApplication(bundleIdentifier: bundleIdentifier)
@@ -220,6 +234,46 @@ final class ControlKitRPCServer {
         return try XCRSControlKitAccessibilityParser.parse(
             debugDescription: debugDescription
         )
+    }
+
+    private func tapElement(named element: String, in bundleIdentifier: String) throws {
+        let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
+        guard application.state == .runningForeground else {
+            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+        }
+        let predicate = NSPredicate(
+            format: "label == %@ OR identifier == %@ OR value == %@",
+            element,
+            element,
+            element
+        )
+        let matches = application.descendants(matching: .any).matching(predicate)
+        let matchCount = matches.count
+        guard matchCount > 0 else {
+            throw RunnerError.elementNotFound(element)
+        }
+        guard matchCount == 1 else {
+            throw RunnerError.ambiguousElement(element, matchCount)
+        }
+        try activate(matches.element(boundBy: 0), named: element)
+    }
+
+    private func activate(_ element: XCUIElement, named name: String) throws {
+        #if os(tvOS)
+        guard element.hasFocus else {
+            throw RunnerError.elementNotFocused(name)
+        }
+        XCUIRemote.shared.press(.select)
+        #else
+        guard element.isHittable else {
+            throw RunnerError.elementNotHittable(name)
+        }
+        #if os(macOS)
+        element.click()
+        #else
+        element.tap()
+        #endif
+        #endif
     }
 
     private func dictionary(_ node: XCRSControlKitAccessibilityNode) throws -> [String: Any] {
@@ -281,12 +335,10 @@ final class ControlKitRPCServer {
 }
 
 private final class RPCHandler: ChannelInboundHandler {
+    // MARK: - Internal
+
     typealias InboundIn = HTTPServerRequestPart
     typealias OutboundOut = HTTPServerResponsePart
-
-    private let requestHandler: (HTTPMethod, String, Data) async -> Data
-    private var requestHead: HTTPRequestHead?
-    private var requestBody = Data()
 
     init(requestHandler: @escaping (HTTPMethod, String, Data) async -> Data) {
         self.requestHandler = requestHandler
@@ -333,23 +385,41 @@ private final class RPCHandler: ChannelInboundHandler {
             }
         }
     }
+
+    // MARK: - Private
+
+    private let requestHandler: (HTTPMethod, String, Data) async -> Data
+    private var requestHead: HTTPRequestHead?
+    private var requestBody = Data()
 }
 
 private enum RunnerError: LocalizedError {
+    case ambiguousElement(String, Int)
     case applicationNotInForeground(String)
     case invalidAccessibilityHierarchy
     case invalidParameter(String)
+    case elementNotFound(String)
+    case elementNotHittable(String)
+    case elementNotFocused(String)
     case unsupportedButton(String)
     case unsupportedInteraction(String)
 
     var errorDescription: String? {
         switch self {
+        case .ambiguousElement(let element, let count):
+            return "Multiple accessibility elements matched \(element): \(count)"
         case .applicationNotInForeground(let bundleIdentifier):
             return "Application is not running in the foreground: \(bundleIdentifier)"
         case .invalidAccessibilityHierarchy:
             return "Could not serialize the accessibility hierarchy"
         case .invalidParameter(let name):
             return "Missing or invalid parameter: \(name)"
+        case .elementNotFound(let element):
+            return "No accessibility element matched: \(element)"
+        case .elementNotHittable(let element):
+            return "Accessibility element is not hittable: \(element)"
+        case .elementNotFocused(let element):
+            return "Accessibility element is not focused on tvOS: \(element)"
         case .unsupportedButton(let button):
             return "Unsupported button: \(button)"
         case .unsupportedInteraction(let interaction):
