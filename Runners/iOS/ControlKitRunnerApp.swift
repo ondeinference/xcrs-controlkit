@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct ControlKitRunnerApp: App {
+    // MARK: - Internal
+
     var body: some Scene {
         WindowGroup {
             ControlKitShowcaseView()
@@ -10,7 +12,7 @@ struct ControlKitRunnerApp: App {
 }
 
 private struct ControlKitShowcaseView: View {
-    private let repositoryURL = URL(string: "https://github.com/ondeinference/xcrs-controlkit")!
+    // MARK: - Internal
 
     var body: some View {
         ZStack {
@@ -58,6 +60,10 @@ private struct ControlKitShowcaseView: View {
         .ignoresSafeArea(.all)
         .statusBarHidden(true)
     }
+
+    // MARK: - Private
+
+    private let repositoryURL = URL(string: "https://github.com/ondeinference/xcrs-controlkit")!
 
     private var logo: some View {
         Text("XC\nRS")

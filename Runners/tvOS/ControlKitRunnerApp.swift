@@ -2,6 +2,8 @@ import SwiftUI
 
 @main
 struct ControlKitRunnerApp: App {
+    // MARK: - Internal
+
     var body: some Scene {
         WindowGroup {
             ControlKitShowcaseView()
@@ -10,6 +12,8 @@ struct ControlKitRunnerApp: App {
 }
 
 private struct ControlKitShowcaseView: View {
+    // MARK: - Internal
+
     var body: some View {
         ZStack {
             LinearGradient(
@@ -45,6 +49,8 @@ private struct ControlKitShowcaseView: View {
             .frame(maxWidth: 1200, alignment: .leading)
         }
     }
+
+    // MARK: - Private
 
     private var logo: some View {
         Text("XC\nRS")
