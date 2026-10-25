@@ -146,6 +146,24 @@ final class HostInspectCommandTests: XCTestCase {
         XCTAssertTrue(result.standardError.contains("unknown option --nope"))
     }
 
+    func testDevicePostureNeedsDeviceAndPosture() {
+        let missingDevice = HostInspectCommand.invoke(arguments: ["devicehub-posture", "--posture", "open"])
+        XCTAssertEqual(missingDevice.exitCode, 2)
+        XCTAssertTrue(missingDevice.standardError.contains("--device is required"))
+
+        let missingPosture = HostInspectCommand.invoke(arguments: ["devicehub-posture", "--device", "iPhone Duo"])
+        XCTAssertEqual(missingPosture.exitCode, 2)
+        XCTAssertTrue(missingPosture.standardError.contains("--posture is required"))
+    }
+
+    func testUnknownDevicePostureIsAUsageError() {
+        let result = HostInspectCommand.invoke(
+            arguments: ["devicehub-posture", "--device", "iPhone Duo", "--posture", "bent"]
+        )
+        XCTAssertEqual(result.exitCode, 2)
+        XCTAssertTrue(result.standardError.contains("--posture must be one of closed, open, partiallyOpen"))
+    }
+
     func testUnknownCommandIsAUsageError() {
         let result = HostInspectCommand.invoke(arguments: ["snapshot"])
         XCTAssertEqual(result.exitCode, 2)

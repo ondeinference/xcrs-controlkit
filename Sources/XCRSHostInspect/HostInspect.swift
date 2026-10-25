@@ -16,6 +16,7 @@ public struct HostInspectInvocationResult: Sendable {
 
 #if os(macOS)
 
+import ApplicationServices
 import CoreGraphics
 import ImageIO
 import Vision
@@ -145,6 +146,13 @@ public struct HostColorRun: Codable, Equatable, Sendable {
     public let color: String
 }
 
+public struct HostPostureResult: Codable, Equatable, Sendable {
+    /// The Device Hub window that was driven.
+    public let window: String
+    /// The posture button that was pressed.
+    public let button: String
+}
+
 public struct HostProbeResult: Codable, Equatable, Sendable {
     public let image: HostInspectImage
     public let axis: HostProbeAxis
@@ -204,6 +212,105 @@ public enum HostInspect {
 
         windows.sort { ($0.layer, $0.id) < ($1.layer, $1.id) }
         return HostWindowList(windows: windows)
+    }
+
+    /// The Device Hub buttons that set a foldable simulator's hinge, by posture.
+    static let devicePostureButtons = [
+        "closed": "Closed",
+        "partiallyOpen": "Partially Open",
+        "open": "Open"
+    ]
+
+    /// Presses the hinge button in the Device Hub window for `device` through the
+    /// macOS accessibility API. The window does not need to be in front. The
+    /// calling process needs the Accessibility permission.
+    public static func setDeviceHubPosture(device: String, posture: String) throws -> HostPostureResult {
+        guard let label = devicePostureButtons[posture] else {
+            throw HostInspectError.usage(
+                "--posture must be one of \(devicePostureButtons.keys.sorted().joined(separator: ", ")), got \(posture)"
+            )
+        }
+        guard AXIsProcessTrusted() else {
+            throw HostInspectError.failure(
+                "Accessibility access is required to press Device Hub buttons. Allow the app that runs xcrs in System Settings > Privacy & Security > Accessibility, then try again."
+            )
+        }
+
+        // A command-line process gets no live NSWorkspace updates, so find Device
+        // Hub's pid through the window server instead.
+        let entries = CGWindowListCopyWindowInfo([.optionAll], kCGNullWindowID) as? [[String: Any]] ?? []
+        let hubs = Set(
+            entries.compactMap { entry -> pid_t? in
+                guard entry[kCGWindowOwnerName as String] as? String == "Device Hub" else { return nil }
+                return (entry[kCGWindowOwnerPID as String] as? Int).map { pid_t($0) }
+            }
+        ).sorted()
+        guard !hubs.isEmpty else {
+            throw HostInspectError.failure("Device Hub is not running. Open it with the device's window visible, then try again.")
+        }
+
+        // Device Hub titles a simulator's window "<name> – <runtime>".
+        var windows: [AXUIElement] = []
+        for hub in hubs {
+            let application = AXUIElementCreateApplication(hub)
+            for window in axChildren(application, attribute: kAXWindowsAttribute) {
+                let title = axString(window, kAXTitleAttribute)
+                if title == device || (
+                    title.hasPrefix(device)
+                        && title.dropFirst(device.count).unicodeScalars.first
+                            .map(CharacterSet.whitespaces.contains) == true
+                ) {
+                    windows.append(window)
+                }
+            }
+        }
+        guard windows.count == 1, let window = windows.first else {
+            throw HostInspectError.failure(
+                windows.isEmpty
+                    ? "Device Hub has no open window for '\(device)'. Open the device in Device Hub, then try again."
+                    : "Device Hub has \(windows.count) windows for '\(device)'; close the extras so the target is unambiguous."
+            )
+        }
+        guard let button = findAXButton(in: window, description: label, depth: 0) else {
+            throw HostInspectError.failure(
+                "the '\(device)' window has no '\(label)' button; the device may not be foldable."
+            )
+        }
+        let status = AXUIElementPerformAction(button, kAXPressAction as CFString)
+        guard status == .success else {
+            throw HostInspectError.failure("pressing '\(label)' failed (AXError \(status.rawValue))")
+        }
+        return HostPostureResult(window: axString(window, kAXTitleAttribute), button: label)
+    }
+
+    private static func axString(_ element: AXUIElement, _ attribute: String) -> String {
+        var value: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(element, attribute as CFString, &value) == .success else {
+            return ""
+        }
+        return value as? String ?? ""
+    }
+
+    private static func axChildren(_ element: AXUIElement, attribute: String = kAXChildrenAttribute) -> [AXUIElement] {
+        var value: CFTypeRef?
+        guard AXUIElementCopyAttributeValue(element, attribute as CFString, &value) == .success else {
+            return []
+        }
+        return value as? [AXUIElement] ?? []
+    }
+
+    private static func findAXButton(in element: AXUIElement, description: String, depth: Int) -> AXUIElement? {
+        if axString(element, kAXRoleAttribute) == kAXButtonRole,
+            axString(element, kAXDescriptionAttribute) == description {
+            return element
+        }
+        guard depth < 12 else { return nil }
+        for child in axChildren(element) {
+            if let found = findAXButton(in: child, description: description, depth: depth + 1) {
+                return found
+            }
+        }
+        return nil
     }
 
     public static func recognizeText(
@@ -510,6 +617,9 @@ public enum HostInspectCommand {
               Write a region of an image to a new PNG.
           probe --image <png> (--row <y> | --column <x>) [--from <a>] [--to <b>] [--scale <n>]
               Report quantised colour runs along one line of an image.
+          devicehub-posture --device <name> --posture <closed|partiallyOpen|open>
+              Set a foldable simulator's hinge by pressing the button in its Device
+              Hub window. Needs Device Hub running and the Accessibility permission.
           help
               Print this text.
 
@@ -555,6 +665,7 @@ public enum HostInspectCommand {
     enum Command: Equatable {
         case help
         case windows(owner: String?)
+        case devicePosture(device: String, posture: String)
         case ocr(image: String, scale: HostInspectScale, languages: [String])
         case crop(image: String, rect: HostInspectRect, scale: HostInspectScale, out: String)
         case probe(
@@ -579,6 +690,15 @@ public enum HostInspectCommand {
             return .help
         case "windows":
             return .windows(owner: try scanner.options().owner)
+        case "devicehub-posture":
+            let options = try scanner.options()
+            guard let device = options.device else {
+                throw HostInspectError.usage("--device is required")
+            }
+            guard let posture = options.posture else {
+                throw HostInspectError.usage("--posture is required")
+            }
+            return .devicePosture(device: device, posture: posture)
         case "ocr":
             let options = try scanner.options()
             return .ocr(
@@ -629,6 +749,8 @@ public enum HostInspectCommand {
             return usage
         case .windows(let owner):
             return try encode(HostInspect.windows(owner: owner))
+        case .devicePosture(let device, let posture):
+            return try encode(HostInspect.setDeviceHubPosture(device: device, posture: posture))
         case .ocr(let image, let scale, let languages):
             return try encode(
                 HostInspect.recognizeText(image: image, scale: scale, languages: languages)
@@ -664,6 +786,8 @@ public enum HostInspectCommand {
 private struct CommandOptions {
     var image: String?
     var owner: String?
+    var device: String?
+    var posture: String?
     var out: String?
     var rect: String?
     var scale = HostInspectScale.pixels
@@ -738,6 +862,10 @@ private struct ArgumentScanner {
                 options.image = try value(name: name, inline: inlineValue)
             case "--owner":
                 options.owner = try value(name: name, inline: inlineValue)
+            case "--device":
+                options.device = try value(name: name, inline: inlineValue)
+            case "--posture":
+                options.posture = try value(name: name, inline: inlineValue)
             case "--out":
                 options.out = try value(name: name, inline: inlineValue)
             case "--rect":

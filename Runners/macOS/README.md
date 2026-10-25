@@ -15,3 +15,5 @@ entitlement, so `ControlKit-macOS-UITests.entitlements` additionally grants
 `com.apple.security.network.server`, allowing the runner to bind its local RPC
 port. The targets sign locally (`CODE_SIGN_IDENTITY = "-"`), so no team or
 provisioning profile is required to build and test.
+
+`device.io.swipe`, `device.io.orientation.*` and `device.hinge.get` are not available on this runner.

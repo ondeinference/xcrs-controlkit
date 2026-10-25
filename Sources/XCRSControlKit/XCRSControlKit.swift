@@ -24,6 +24,8 @@ public enum XCRSControlKitCapability: String, Codable, CaseIterable, Sendable {
     case pointer
     case spatialInteraction
     case pairedDevice
+    /// Reports a hinge angle and fold state. Advertised at runtime, only by foldable devices.
+    case hinge
 }
 
 /// A simulator or device controlled by a runner.
