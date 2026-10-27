@@ -15,13 +15,31 @@ let package = Package(
         .library(
             name: "XCRSControlKit",
             targets: ["XCRSControlKit"]
+        ),
+        .library(
+            name: "XCRSHostInspect",
+            targets: ["XCRSHostInspect"]
+        ),
+        .executable(
+            name: "xcrs-host-inspect",
+            targets: ["XCRSHostInspectCLI"]
         )
     ],
     targets: [
         .target(name: "XCRSControlKit"),
+        .target(name: "XCRSHostInspect"),
+        .executableTarget(
+            name: "XCRSHostInspectCLI",
+            dependencies: ["XCRSHostInspect"]
+        ),
         .testTarget(
             name: "XCRSControlKitTests",
             dependencies: ["XCRSControlKit"]
+        ),
+        .testTarget(
+            name: "XCRSHostInspectTests",
+            dependencies: ["XCRSHostInspect"],
+            resources: [.copy("Fixtures")]
         )
     ]
 )

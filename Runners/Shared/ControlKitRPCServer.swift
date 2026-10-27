@@ -4,6 +4,9 @@ import NIOHTTP1
 import NIOPosix
 import XCTest
 import XCRSControlKit
+#if os(iOS)
+import UIKit
+#endif
 
 private struct JSONRPCRequest {
     let method: String
@@ -53,13 +56,17 @@ final class ControlKitRPCServer {
         "device.apps.terminate",
         "device.capabilities",
         "device.dump.ui",
-        "device.ui.tap",
+        "device.hinge.get",
         "device.info",
         "device.io.button",
         "device.io.click",
+        "device.io.orientation.get",
+        "device.io.orientation.set",
         "device.io.spatial.tap",
+        "device.io.swipe",
         "device.io.tap",
-        "device.io.text"
+        "device.io.text",
+        "device.ui.tap"
     ]
 
     private static var platform: XCRSControlKitPlatform {
@@ -106,10 +113,14 @@ final class ControlKitRPCServer {
     private func dispatch(_ request: JSONRPCRequest) async throws -> Data {
         switch request.method {
         case "device.capabilities":
+            var capabilities = XCRSControlKitCapabilities.standard(for: Self.platform).values
+            if await hingeSnapshot() != nil {
+                capabilities.insert(.hinge)
+            }
             return try response(
                 result: [
                     "platform": Self.platform.rawValue,
-                    "capabilities": XCRSControlKitCapabilities.standard(for: Self.platform).values.map(\.rawValue).sorted(),
+                    "capabilities": capabilities.map(\.rawValue).sorted(),
                     "methods": Self.supportedMethods
                 ],
                 id: request.id
@@ -171,6 +182,41 @@ final class ControlKitRPCServer {
             #else
             throw RunnerError.unsupportedInteraction("spatial tap")
             #endif
+        case "device.io.swipe":
+            #if os(iOS)
+            try swipe(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("swipe")
+            #endif
+        case "device.io.orientation.get":
+            #if os(iOS)
+            return try response(
+                result: ["orientation": Self.orientationName(XCUIDevice.shared.orientation)],
+                id: request.id
+            )
+            #else
+            throw RunnerError.unsupportedInteraction("orientation")
+            #endif
+        case "device.io.orientation.set":
+            #if os(iOS)
+            let name = try stringParameter("orientation", request.params)
+            guard let orientation = Self.orientation(named: name) else {
+                throw RunnerError.invalidParameter("orientation")
+            }
+            XCUIDevice.shared.orientation = orientation
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("orientation")
+            #endif
+        case "device.hinge.get":
+            guard let hinge = await hingeSnapshot() else {
+                return try response(result: ["status": "unsupported"], id: request.id)
+            }
+            return try response(
+                result: ["status": hinge.status, "angle": hinge.angle],
+                id: request.id
+            )
         case "device.io.text":
             let text = try stringParameter("text", request.params)
             foregroundApplication(request.params).typeText(text)
@@ -284,21 +330,87 @@ final class ControlKitRPCServer {
         return object
     }
 
-    #if !os(tvOS)
-    private func tap(_ params: [String: Any]) throws {
-        let x = try doubleParameter("x", params)
-        let y = try doubleParameter("y", params)
+    /// Like `foregroundApplication`, but fails cleanly when the app is not running.
+    /// Querying a stopped application records an XCTest failure, which ends the
+    /// runner's only test case and takes the server down with it.
+    private func runningApplication(_ params: [String: Any]) throws -> XCUIApplication {
         let application = foregroundApplication(params)
+        guard application.state != .notRunning else {
+            throw RunnerError.applicationNotRunning((params["bundleId"] as? String) ?? "the app under test")
+        }
+        return application
+    }
+
+    #if !os(tvOS)
+    /// Maps a point in the application's frame to an `XCUICoordinate`, clamped to the frame.
+    private func coordinate(x: Double, y: Double, in application: XCUIApplication) throws -> XCUICoordinate {
         let frame = application.frame
-        let coordinate = application.coordinate(
+        guard frame.width > 0, frame.height > 0 else {
+            throw RunnerError.emptyFrame
+        }
+        return application.coordinate(
             withNormalizedOffset: CGVector(
                 dx: max(0, min(1, x / Double(frame.width))),
                 dy: max(0, min(1, y / Double(frame.height)))
             )
         )
-        coordinate.tap()
+    }
+
+    private func tap(_ params: [String: Any]) throws {
+        let x = try doubleParameter("x", params)
+        let y = try doubleParameter("y", params)
+        try coordinate(x: x, y: y, in: runningApplication(params)).tap()
     }
     #endif
+
+    #if os(iOS)
+    private func swipe(_ params: [String: Any]) throws {
+        let application = try runningApplication(params)
+        let start = try coordinate(
+            x: try doubleParameter("x1", params),
+            y: try doubleParameter("y1", params),
+            in: application
+        )
+        let end = try coordinate(
+            x: try doubleParameter("x2", params),
+            y: try doubleParameter("y2", params),
+            in: application
+        )
+        let durationMs = (try? doubleParameter("durationMs", params)) ?? 300
+        start.press(forDuration: max(0.05, durationMs / 1000), thenDragTo: end)
+    }
+
+    private static func orientationName(_ orientation: UIDeviceOrientation) -> String {
+        orientation.isLandscape ? "LANDSCAPE" : "PORTRAIT"
+    }
+
+    private static func orientation(named name: String) -> UIDeviceOrientation? {
+        switch name.uppercased() {
+        case "PORTRAIT":
+            return .portrait
+        case "LANDSCAPE":
+            return .landscapeLeft
+        default:
+            return nil
+        }
+    }
+    #endif
+
+    private struct HingeSnapshot {
+        let status: String
+        let angle: Double
+    }
+
+    /// Reads the hinge, or returns nil when this platform or device reports none.
+    private func hingeSnapshot() async -> HingeSnapshot? {
+        #if os(iOS)
+        if #available(iOS 27.1, *) {
+            guard let hinge = await HingeReader.read() else { return nil }
+            return HingeSnapshot(status: hinge.status, angle: hinge.angle)
+        }
+        #endif
+        return nil
+    }
 
     private func stringParameter(_ name: String, _ params: [String: Any]) throws -> String {
         guard let value = params[name] as? String, !value.isEmpty else {
@@ -395,11 +507,13 @@ private final class RPCHandler: ChannelInboundHandler {
 
 private enum RunnerError: LocalizedError {
     case ambiguousElement(String, Int)
+    case applicationNotRunning(String)
     case applicationNotInForeground(String)
     case invalidAccessibilityHierarchy
     case invalidParameter(String)
     case elementNotFound(String)
     case elementNotHittable(String)
+    case emptyFrame
     case elementNotFocused(String)
     case unsupportedButton(String)
     case unsupportedInteraction(String)
@@ -408,6 +522,10 @@ private enum RunnerError: LocalizedError {
         switch self {
         case .ambiguousElement(let element, let count):
             return "Multiple accessibility elements matched \(element): \(count)"
+        case .applicationNotRunning(let application):
+            return "Application \(application) is not running"
+        case .emptyFrame:
+            return "The application frame is empty, so there is nothing to tap"
         case .applicationNotInForeground(let bundleIdentifier):
             return "Application is not running in the foreground: \(bundleIdentifier)"
         case .invalidAccessibilityHierarchy:
@@ -427,3 +545,53 @@ private enum RunnerError: LocalizedError {
         }
     }
 }
+
+#if os(iOS)
+/// `UIHinge` is only delivered through a `UIHingeInteraction` attached to a view,
+/// so the reader hosts a one-off view in the runner's first window scene.
+@available(iOS 27.1, *)
+@MainActor
+private enum HingeReader {
+    static func read() async -> (status: String, angle: Double)? {
+        guard let scene = UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }).first else {
+            return nil
+        }
+        let window = scene.windows.first ?? UIWindow(windowScene: scene)
+        let view = UIView()
+        window.addSubview(view)
+        defer { view.removeFromSuperview() }
+
+        let result: (status: String, angle: Double)? = await withCheckedContinuation { continuation in
+            var resumed = false
+            let finish: ((status: String, angle: Double)?) -> Void = { value in
+                guard !resumed else { return }
+                resumed = true
+                continuation.resume(returning: value)
+            }
+            let interaction = UIHingeInteraction { _, update in
+                guard let hinge = update.hinge else {
+                    finish(nil)
+                    return
+                }
+                finish((statusName(hinge.status), Double(hinge.angle)))
+            }
+            view.addInteraction(interaction)
+            interaction.isEnabled = true
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: 2_000_000_000)
+                finish(nil)
+            }
+        }
+        return result
+    }
+
+    private static func statusName(_ status: UIHinge.Status) -> String {
+        switch status {
+        case .closed: return "closed"
+        case .partiallyOpen: return "partiallyOpen"
+        case .fullyOpen: return "fullyOpen"
+        default: return "unknown"
+        }
+    }
+}
+#endif

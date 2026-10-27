@@ -9,3 +9,5 @@ activation through an `XCUICoordinate` tap, while raw `device.io.tap`, `home`,
 and orientation controls are intentionally unsupported. The JSON-RPC transport
 and server live in `../Shared` and are compiled into the
 `ControlKit-visionOS-UITests` target.
+
+`device.io.swipe`, `device.io.orientation.*` and `device.hinge.get` are not available on this runner.

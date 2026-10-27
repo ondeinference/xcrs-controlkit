@@ -7,3 +7,5 @@ This folder holds the tvOS host application (`ControlKitRunnerApp.swift` and
 tvOS is remote-driven: `device.io.button` maps to `XCUIRemote` presses and
 touch/`home` are intentionally unsupported. The JSON-RPC transport and server
 live in `../Shared` and are compiled into the `ControlKit-tvOS-UITests` target.
+
+`device.io.swipe`, `device.io.orientation.*` and `device.hinge.get` are not available on this runner.

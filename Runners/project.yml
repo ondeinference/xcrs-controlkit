@@ -21,7 +21,7 @@ packages:
     path: ..
   swift-nio:
     url: https://github.com/apple/swift-nio.git
-    from: 2.0.0
+    exactVersion: 2.101.0
 
 targetTemplates:
   Runner:
