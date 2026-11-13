@@ -1,4 +1,5 @@
 import Foundation
+import ImageIO
 import NIOCore
 import NIOHTTP1
 import NIOPosix
@@ -52,6 +53,7 @@ final class ControlKitRPCServer {
 
     private static let protocolVersion = 1
     private static let supportedMethods = [
+        "device.apps.activate",
         "device.apps.launch",
         "device.apps.terminate",
         "device.capabilities",
@@ -60,13 +62,18 @@ final class ControlKitRPCServer {
         "device.info",
         "device.io.button",
         "device.io.click",
+        "device.io.drag",
+        "device.io.key",
         "device.io.orientation.get",
         "device.io.orientation.set",
+        "device.io.scroll",
         "device.io.spatial.tap",
         "device.io.swipe",
         "device.io.tap",
         "device.io.text",
-        "device.ui.tap"
+        "device.screenshot",
+        "device.ui.tap",
+        "device.window.resize"
     ]
 
     private static var platform: XCRSControlKitPlatform {
@@ -136,31 +143,87 @@ final class ControlKitRPCServer {
                 id: request.id
             )
         case "device.dump.ui":
-            let bundleIdentifier = try stringParameter("bundleId", request.params)
-            let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
-            let hierarchy = try accessibilityHierarchy(
-                application,
-                bundleIdentifier: bundleIdentifier
+            let target = try requiredApplication(request.params)
+            let (hierarchy, debugDescription) = try accessibilityHierarchy(
+                target.application,
+                name: target.name
             )
-            return try response(result: dictionary(hierarchy), id: request.id)
+            var result = try dictionary(hierarchy)
+            if (request.params["raw"] as? Bool) == true {
+                result["debugDescription"] = debugDescription
+            }
+            return try response(result: result, id: request.id)
         case "device.ui.tap":
-            let bundleIdentifier = try stringParameter("bundleId", request.params)
+            let target = try requiredApplication(request.params)
             let element = try stringParameter("element", request.params)
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             guard !element.isEmpty else {
                 throw RunnerError.invalidParameter("element")
             }
-            try tapElement(named: element, in: bundleIdentifier)
+            let elementType: XCUIElement.ElementType
+            if let typeName = request.params["type"] as? String, !typeName.isEmpty {
+                guard let resolved = Self.elementTypes[typeName.lowercased()] else {
+                    throw RunnerError.invalidParameter("type")
+                }
+                elementType = resolved
+            } else {
+                elementType = .any
+            }
+            let index = (request.params["index"] as? NSNumber)?.intValue
+            try tapElement(
+                named: element,
+                ofType: elementType,
+                index: index,
+                in: target.application,
+                name: target.name
+            )
             return try response(result: ["success": true], id: request.id)
         case "device.apps.launch":
-            let bundleIdentifier = try stringParameter("bundleId", request.params)
-            let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
-            application.launch()
+            try requiredApplication(request.params).application.launch()
             return try response(result: ["success": true], id: request.id)
+        case "device.apps.activate":
+            // Unlike launch, activate leaves an already-running app alone and only
+            // brings it to the foreground. launch() on an app that something else
+            // started (Finder, `open`, a second copy at another path) can block
+            // for minutes and then fail with "does not have a process ID".
+            let application = try requiredApplication(request.params).application
+            application.activate()
+            return try response(
+                result: ["success": true, "state": Self.stateName(application.state)],
+                id: request.id
+            )
         case "device.apps.terminate":
-            let bundleIdentifier = try stringParameter("bundleId", request.params)
-            XCUIApplication(bundleIdentifier: bundleIdentifier).terminate()
+            try requiredApplication(request.params).application.terminate()
             return try response(result: ["success": true], id: request.id)
+        case "device.screenshot":
+            return try response(result: screenshot(request.params), id: request.id)
+        case "device.io.drag":
+            #if os(macOS)
+            try drag(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("pointer drag")
+            #endif
+        case "device.io.scroll":
+            #if os(macOS)
+            try scroll(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("scroll wheel")
+            #endif
+        case "device.io.key":
+            #if os(macOS)
+            try typeKey(request.params)
+            return try response(result: ["success": true], id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("keyboard shortcut")
+            #endif
+        case "device.window.resize":
+            #if os(macOS)
+            return try response(result: resizeWindow(request.params), id: request.id)
+            #else
+            throw RunnerError.unsupportedInteraction("window resize")
+            #endif
         case "device.io.tap":
             #if os(tvOS) || os(visionOS) || os(macOS)
             throw RunnerError.unsupportedInteraction("touch")
@@ -219,7 +282,7 @@ final class ControlKitRPCServer {
             )
         case "device.io.text":
             let text = try stringParameter("text", request.params)
-            foregroundApplication(request.params).typeText(text)
+            application(request.params).typeText(text)
             return try response(result: ["success": true], id: request.id)
         case "device.io.button":
             let button = try stringParameter("button", request.params)
@@ -259,44 +322,121 @@ final class ControlKitRPCServer {
         }
     }
 
-    private func foregroundApplication(_ params: [String: Any]) -> XCUIApplication {
-        if let bundleIdentifier = params["bundleId"] as? String {
+    /// Resolves the app a request targets.
+    ///
+    /// On macOS `path` wins over `bundleId`: a bundle identifier resolves through
+    /// LaunchServices, which picks one copy when several are installed (an App
+    /// Store build in /Applications and a staged build elsewhere, say), and the
+    /// runner then reports the copy you actually started as "not in the
+    /// foreground". A path names exactly one bundle.
+    private func application(_ params: [String: Any]) -> XCUIApplication {
+        #if os(macOS)
+        if let path = params["path"] as? String, !path.isEmpty {
+            return XCUIApplication(url: URL(fileURLWithPath: path))
+        }
+        #endif
+        if let bundleIdentifier = params["bundleId"] as? String, !bundleIdentifier.isEmpty {
             return XCUIApplication(bundleIdentifier: bundleIdentifier)
         }
         return XCUIApplication()
     }
 
+    /// Like `application(_:)`, but the request must name the app.
+    private func requiredApplication(
+        _ params: [String: Any]
+    ) throws -> (application: XCUIApplication, name: String) {
+        #if os(macOS)
+        if let path = params["path"] as? String, !path.isEmpty {
+            return (application(params), path)
+        }
+        #endif
+        let bundleIdentifier = try stringParameter("bundleId", params)
+        return (XCUIApplication(bundleIdentifier: bundleIdentifier), bundleIdentifier)
+    }
+
     private func accessibilityHierarchy(
         _ application: XCUIApplication,
-        bundleIdentifier: String
-    ) throws -> XCRSControlKitAccessibilityNode {
+        name: String
+    ) throws -> (XCRSControlKitAccessibilityNode, String) {
         guard application.state == .runningForeground else {
-            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+            throw RunnerError.applicationNotInForeground(name)
         }
         let debugDescription = application.debugDescription
         guard application.state == .runningForeground else {
-            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+            throw RunnerError.applicationNotInForeground(name)
         }
-        return try XCRSControlKitAccessibilityParser.parse(
+        let hierarchy = try XCRSControlKitAccessibilityParser.parse(
             debugDescription: debugDescription
         )
+        return (hierarchy, debugDescription)
     }
 
-    private func tapElement(named element: String, in bundleIdentifier: String) throws {
-        let application = XCUIApplication(bundleIdentifier: bundleIdentifier)
+    /// Element types `device.ui.tap` can narrow a match to, by the names
+    /// `device.dump.ui` reports in `type`.
+    private static let elementTypes: [String: XCUIElement.ElementType] = [
+        "button": .button,
+        "link": .link,
+        "statictext": .staticText,
+        "textfield": .textField,
+        "securetextfield": .secureTextField,
+        "textview": .textView,
+        "searchfield": .searchField,
+        "checkbox": .checkBox,
+        "radiobutton": .radioButton,
+        "switch": .switch,
+        "toggle": .toggle,
+        "slider": .slider,
+        "image": .image,
+        "cell": .cell,
+        "menuitem": .menuItem,
+        "menubaritem": .menuBarItem,
+        "popupbutton": .popUpButton,
+        "tab": .tab,
+        "other": .other
+    ]
+
+    private func tapElement(
+        named element: String,
+        ofType elementType: XCUIElement.ElementType,
+        index: Int?,
+        in application: XCUIApplication,
+        name: String
+    ) throws {
         guard application.state == .runningForeground else {
-            throw RunnerError.applicationNotInForeground(bundleIdentifier)
+            throw RunnerError.applicationNotInForeground(name)
         }
+        // macOS controls usually carry their text as `title` (a button's caption),
+        // not `label`, so match it too there.
+        #if os(macOS)
+        let predicate = NSPredicate(
+            format: "label == %@ OR identifier == %@ OR value == %@ OR title == %@",
+            element,
+            element,
+            element,
+            element
+        )
+        #else
         let predicate = NSPredicate(
             format: "label == %@ OR identifier == %@ OR value == %@",
             element,
             element,
             element
         )
-        let matches = application.descendants(matching: .any).matching(predicate)
+        #endif
+        // Web views repeat a control's text on the control and on the static
+        // text inside it (and often on a nav link too), so callers can narrow
+        // by type, or pick one of several matches by index (document order).
+        let matches = application.descendants(matching: elementType).matching(predicate)
         let matchCount = matches.count
         guard matchCount > 0 else {
             throw RunnerError.elementNotFound(element)
+        }
+        if let index {
+            guard index >= 0, index < matchCount else {
+                throw RunnerError.invalidParameter("index")
+            }
+            try activate(matches.element(boundBy: index), named: element)
+            return
         }
         guard matchCount == 1 else {
             throw RunnerError.ambiguousElement(element, matchCount)
@@ -334,16 +474,222 @@ final class ControlKitRPCServer {
     /// Querying a stopped application records an XCTest failure, which ends the
     /// runner's only test case and takes the server down with it.
     private func runningApplication(_ params: [String: Any]) throws -> XCUIApplication {
-        let application = foregroundApplication(params)
+        let application = application(params)
         guard application.state != .notRunning else {
-            throw RunnerError.applicationNotRunning((params["bundleId"] as? String) ?? "the app under test")
+            throw RunnerError.applicationNotRunning(
+                (params["path"] as? String) ?? (params["bundleId"] as? String) ?? "the app under test"
+            )
         }
         return application
     }
 
+    private static func stateName(_ state: XCUIApplication.State) -> String {
+        switch state {
+        case .notRunning: return "notRunning"
+        #if !os(macOS)
+        case .runningBackgroundSuspended: return "runningBackgroundSuspended"
+        #endif
+        case .runningBackground: return "runningBackground"
+        case .runningForeground: return "runningForeground"
+        default: return "unknown"
+        }
+    }
+
+    /// PNG of the app's main window (`target: "window"`, the default when an app
+    /// is named) or of the whole main screen (`target: "screen"`), base64-encoded.
+    /// Pixel sizes are read back from the PNG, so they include the display scale.
+    private func screenshot(_ params: [String: Any]) throws -> [String: Any] {
+        let named = params["path"] != nil || params["bundleId"] != nil
+        let target = (params["target"] as? String) ?? (named ? "window" : "screen")
+        let png: Data
+        switch target {
+        case "screen":
+            png = XCUIScreen.main.screenshot().pngRepresentation
+        case "window":
+            let application = try runningApplication(params)
+            png = try mainWindow(of: application).screenshot().pngRepresentation
+        default:
+            throw RunnerError.invalidParameter("target")
+        }
+        var result: [String: Any] = ["png": png.base64EncodedString(), "target": target]
+        if
+            let source = CGImageSourceCreateWithData(png as CFData, nil),
+            let properties = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any]
+        {
+            result["width"] = properties[kCGImagePropertyPixelWidth]
+            result["height"] = properties[kCGImagePropertyPixelHeight]
+        }
+        return result
+    }
+
+    /// The app's largest on-screen window. `windows.firstMatch` is not enough on
+    /// macOS: WebKit-based apps (Tauri, Electron) also own small hidden helper
+    /// windows that can come first.
+    private func mainWindow(of application: XCUIApplication) throws -> XCUIElement {
+        let windows = application.windows.allElementsBoundByIndex.filter { window in
+            let frame = window.frame
+            return frame.width > 1 && frame.height > 1
+        }
+        guard let window = windows.max(by: { left, right in
+            left.frame.width * left.frame.height < right.frame.width * right.frame.height
+        }) else {
+            throw RunnerError.noWindow
+        }
+        return window
+    }
+
+    #if os(macOS)
+    /// Maps a screen point (the space `device.dump.ui` reports rects in) to a
+    /// coordinate anchored on the window under it. The application element has
+    /// no frame of its own on macOS, so it cannot be the anchor there.
+    private func screenCoordinate(
+        x: Double,
+        y: Double,
+        in application: XCUIApplication
+    ) throws -> (coordinate: XCUICoordinate, window: XCUIElement) {
+        let point = CGPoint(x: x, y: y)
+        let windows = application.windows.allElementsBoundByIndex.filter { window in
+            let frame = window.frame
+            return frame.width > 1 && frame.height > 1
+        }
+        guard let window = windows.first(where: { $0.frame.contains(point) }) ?? windows.first else {
+            throw RunnerError.noWindow
+        }
+        let origin = window.frame.origin
+        let coordinate = window
+            .coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: x - origin.x, dy: y - origin.y))
+        return (coordinate, window)
+    }
+
+    private func drag(_ params: [String: Any]) throws {
+        let application = try runningApplication(params)
+        let x1 = try doubleParameter("x1", params)
+        let y1 = try doubleParameter("y1", params)
+        let start = try screenCoordinate(x: x1, y: y1, in: application).coordinate
+        // Anchor the end on the same window as the start, so a drag that leaves
+        // the window (resizing it, dropping onto another app) still lands where
+        // it was asked to.
+        let end = start.withOffset(CGVector(
+            dx: try doubleParameter("x2", params) - x1,
+            dy: try doubleParameter("y2", params) - y1
+        ))
+        let holdMs = (try? doubleParameter("holdMs", params)) ?? 100
+        start.press(forDuration: max(0.05, holdMs / 1000), thenDragTo: end)
+    }
+
+    private func scroll(_ params: [String: Any]) throws {
+        let application = try runningApplication(params)
+        let coordinate = try screenCoordinate(
+            x: try doubleParameter("x", params),
+            y: try doubleParameter("y", params),
+            in: application
+        ).coordinate
+        coordinate.scroll(
+            byDeltaX: (try? doubleParameter("dx", params)) ?? 0,
+            deltaY: (try? doubleParameter("dy", params)) ?? 0
+        )
+    }
+
+    private func typeKey(_ params: [String: Any]) throws {
+        let name = try stringParameter("key", params)
+        let key: String
+        if let named = Self.namedKeys[name.lowercased()] {
+            key = named.rawValue
+        } else if name.count == 1 {
+            key = name
+        } else {
+            throw RunnerError.unsupportedKey(name)
+        }
+        var flags: XCUIElement.KeyModifierFlags = []
+        for modifier in (params["modifiers"] as? [String]) ?? [] {
+            switch modifier.lowercased() {
+            case "command", "cmd": flags.insert(.command)
+            case "shift": flags.insert(.shift)
+            case "option", "alt": flags.insert(.option)
+            case "control", "ctrl": flags.insert(.control)
+            case "function", "fn": flags.insert(.function)
+            default: throw RunnerError.invalidParameter("modifiers")
+            }
+        }
+        application(params).typeKey(key, modifierFlags: flags)
+    }
+
+    private static let namedKeys: [String: XCUIKeyboardKey] = [
+        "return": .return,
+        "enter": .enter,
+        "escape": .escape,
+        "tab": .tab,
+        "space": .space,
+        "delete": .delete,
+        "backspace": .delete,
+        "forwarddelete": .forwardDelete,
+        "up": .upArrow,
+        "down": .downArrow,
+        "left": .leftArrow,
+        "right": .rightArrow,
+        "home": .home,
+        "end": .end,
+        "pageup": .pageUp,
+        "pagedown": .pageDown
+    ]
+
+    /// Resizes the app's main window by dragging its bottom-right corner, then
+    /// reports the frame the window actually ended up with. Windows enforce their
+    /// own minimum and maximum sizes, and a full-screen window cannot be resized
+    /// at all, so callers should compare the returned size with what they asked for.
+    private func resizeWindow(_ params: [String: Any]) throws -> [String: Any] {
+        let application = try runningApplication(params)
+        let window = try mainWindow(of: application)
+        let width = try doubleParameter("width", params)
+        let height = try doubleParameter("height", params)
+        guard width > 0, height > 0 else {
+            throw RunnerError.invalidParameter(width > 0 ? "height" : "width")
+        }
+        // A window cannot grow past the screen edge, so move it first when asked:
+        // drag a point in the title bar (clear of the traffic lights on the left)
+        // until the window's top-left corner sits at x, y.
+        if let x = try? doubleParameter("x", params), let y = try? doubleParameter("y", params) {
+            let frame = window.frame
+            let grab = window
+                .coordinate(withNormalizedOffset: .zero)
+                .withOffset(CGVector(dx: min(frame.width / 2, 160), dy: 8))
+            grab.press(forDuration: 0.2, thenDragTo: grab.withOffset(CGVector(
+                dx: x - frame.origin.x,
+                dy: y - frame.origin.y
+            )))
+        }
+        let before = window.frame
+        // Grab two points inside the corner: far enough in to hit the resize
+        // area rather than miss the window, close enough not to hit content.
+        let corner = window
+            .coordinate(withNormalizedOffset: .zero)
+            .withOffset(CGVector(dx: before.width - 2, dy: before.height - 2))
+        let target = corner.withOffset(CGVector(
+            dx: width - before.width,
+            dy: height - before.height
+        ))
+        corner.press(forDuration: 0.2, thenDragTo: target)
+        let after = window.frame
+        return [
+            "x": after.origin.x,
+            "y": after.origin.y,
+            "width": after.width,
+            "height": after.height,
+            "requestedWidth": width,
+            "requestedHeight": height,
+            // The screen edge or the window's own size limits stopped the drag.
+            "clamped": abs(after.width - width) > 1 || abs(after.height - height) > 1
+        ]
+    }
+    #endif
+
     #if !os(tvOS)
     /// Maps a point in the application's frame to an `XCUICoordinate`, clamped to the frame.
     private func coordinate(x: Double, y: Double, in application: XCUIApplication) throws -> XCUICoordinate {
+        #if os(macOS)
+        return try screenCoordinate(x: x, y: y, in: application).coordinate
+        #else
         let frame = application.frame
         guard frame.width > 0, frame.height > 0 else {
             throw RunnerError.emptyFrame
@@ -354,6 +700,7 @@ final class ControlKitRPCServer {
                 dy: max(0, min(1, y / Double(frame.height)))
             )
         )
+        #endif
     }
 
     private func tap(_ params: [String: Any]) throws {
@@ -515,13 +862,15 @@ private enum RunnerError: LocalizedError {
     case elementNotHittable(String)
     case emptyFrame
     case elementNotFocused(String)
+    case noWindow
     case unsupportedButton(String)
     case unsupportedInteraction(String)
+    case unsupportedKey(String)
 
     var errorDescription: String? {
         switch self {
         case .ambiguousElement(let element, let count):
-            return "Multiple accessibility elements matched \(element): \(count)"
+            return "Multiple accessibility elements matched \(element): \(count). Narrow with type (e.g. Button) or pick one with index"
         case .applicationNotRunning(let application):
             return "Application \(application) is not running"
         case .emptyFrame:
@@ -538,6 +887,10 @@ private enum RunnerError: LocalizedError {
             return "Accessibility element is not hittable: \(element)"
         case .elementNotFocused(let element):
             return "Accessibility element is not focused on tvOS: \(element)"
+        case .noWindow:
+            return "The application has no on-screen window"
+        case .unsupportedKey(let key):
+            return "Unsupported key: \(key). Use a single character or one of return, enter, escape, tab, space, delete, forwardDelete, up, down, left, right, home, end, pageUp, pageDown"
         case .unsupportedButton(let button):
             return "Unsupported button: \(button)"
         case .unsupportedInteraction(let interaction):

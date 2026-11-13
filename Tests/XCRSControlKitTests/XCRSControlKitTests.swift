@@ -156,6 +156,42 @@ final class XCRSControlKitTests: XCTestCase {
         XCTAssertEqual(button.selected, true)
     }
 
+    /// Lines as XCTest prints them for a WebKit (Tauri) window on macOS: controls
+    /// carry `title`, static text an unquoted trailing `value`.
+    func testAccessibilityParserReadsMacOSTitlesAndUnquotedValues() throws {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1, pid: 52989, title: 'SplitFire AI', Disabled
+            Window (Main), 0x2, {{356.0, 107.0}, {800.0, 600.0}}, title: 'SplitFire AI', Disabled
+              StaticText, 0x3, {{440.0, 270.0}, {139.0, 17.0}}, value: No file selected
+              Button, 0x4, {{950.0, 256.0}, {122.0, 45.0}}, title: 'CHOOSE FILE'
+              Button, 0x5, {{420.0, 618.0}, {672.0, 61.0}}, title: 'SEPARATE', Disabled
+              StaticText, 0x6, {{1.0, 2.0}, {3.0, 4.0}}, value: 01 — SOURCE AUDIO, Disabled
+              Button, 0x7, {{1.0, 2.0}, {3.0, 4.0}}, identifier: 'close', label: 'Close', title: 'Ignored'
+        Path to element:
+        """
+
+        let root = try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: hierarchy
+        )
+
+        XCTAssertEqual(root.label, "SplitFire AI")
+        let window = try XCTUnwrap(root.children.first)
+        XCTAssertEqual(window.label, "SplitFire AI")
+        XCTAssertEqual(window.enabled, false)
+        let children = window.children
+        XCTAssertEqual(children.count, 5)
+        XCTAssertEqual(children[0].value, "No file selected")
+        XCTAssertNil(children[0].label)
+        XCTAssertEqual(children[1].label, "CHOOSE FILE")
+        XCTAssertEqual(children[1].rect, XCRSControlKitRect(x: 950, y: 256, width: 122, height: 45))
+        XCTAssertEqual(children[2].label, "SEPARATE")
+        XCTAssertEqual(children[2].enabled, false)
+        XCTAssertEqual(children[3].value, "01 — SOURCE AUDIO")
+        XCTAssertEqual(children[3].enabled, false)
+        XCTAssertEqual(children[4].label, "Close", "an explicit label wins over title")
+    }
+
     func testAccessibilityParserRejectsMultipleRootElements() {
         let hierarchy = """
         Element subtree:
