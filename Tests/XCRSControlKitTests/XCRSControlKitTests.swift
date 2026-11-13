@@ -192,6 +192,27 @@ final class XCRSControlKitTests: XCTestCase {
         XCTAssertEqual(children[4].label, "Close", "an explicit label wins over title")
     }
 
+    func testAccessibilityParserIgnoresValueSeparatorInsideQuotedTitle() throws {
+        let hierarchy = """
+        Element subtree:
+         →Application, 0x1, pid: 1
+            Window (Main), 0x2, {{0.0, 0.0}, {10.0, 10.0}}
+              StaticText, 0x3, {{0.0, 0.0}, {1.0, 1.0}}, title: 'Total, value: n/a'
+              StaticText, 0x4, {{0.0, 0.0}, {1.0, 1.0}}, title: 'Volume', value: 50%
+        Path to element:
+        """
+
+        let root = try XCRSControlKitAccessibilityParser.parse(
+            debugDescription: hierarchy
+        )
+        let window = try XCTUnwrap(root.children.first)
+        let children = window.children
+        XCTAssertEqual(children[0].label, "Total, value: n/a")
+        XCTAssertNil(children[0].value, "a `, value: ` inside a quoted title is not a value attribute")
+        XCTAssertEqual(children[1].label, "Volume")
+        XCTAssertEqual(children[1].value, "50%", "a real unquoted value outside quotes is still read")
+    }
+
     func testAccessibilityParserRejectsMultipleRootElements() {
         let hierarchy = """
         Element subtree:

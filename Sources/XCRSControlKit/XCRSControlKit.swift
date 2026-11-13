@@ -354,8 +354,31 @@ public enum XCRSControlKitAccessibilityParser {
     /// `StaticText, 0x1, {{0.0, 0.0}, {10.0, 10.0}}, value: No file selected`.
     /// It runs to the end of the line, less any trailing standalone flags.
     private static func unquotedValue(in line: String) -> String? {
+        // Find the separator outside any quoted attribute, so a `, value: ` that
+        // sits inside a quoted `title`/`label`/`placeholderValue` is not mistaken
+        // for the real value attribute.
+        let separator = ", value: "
+        var index = line.startIndex
+        var quoted = false
+        var valueStart: String.Index?
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'" {
+                if quoted {
+                    if isClosingQuote(at: index, in: line) {
+                        quoted = false
+                    }
+                } else {
+                    quoted = true
+                }
+            } else if character == ",", !quoted, line[index...].hasPrefix(separator) {
+                valueStart = line.index(index, offsetBy: separator.count)
+                break
+            }
+            index = line.index(after: index)
+        }
         guard
-            let valueStart = line.range(of: ", value: ")?.upperBound,
+            let valueStart,
             line[valueStart...].first != "'"
         else {
             return nil

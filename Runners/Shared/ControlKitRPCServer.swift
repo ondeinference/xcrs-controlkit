@@ -392,6 +392,16 @@ final class ControlKitRPCServer {
         "menubaritem": .menuBarItem,
         "popupbutton": .popUpButton,
         "tab": .tab,
+        "group": .group,
+        "scrollview": .scrollView,
+        "table": .table,
+        "webview": .webView,
+        "progressindicator": .progressIndicator,
+        "datepicker": .datePicker,
+        "toolbar": .toolbar,
+        "menu": .menu,
+        "combobox": .comboBox,
+        "window": .window,
         "other": .other
     ]
 
@@ -499,7 +509,8 @@ final class ControlKitRPCServer {
     /// is named) or of the whole main screen (`target: "screen"`), base64-encoded.
     /// Pixel sizes are read back from the PNG, so they include the display scale.
     private func screenshot(_ params: [String: Any]) throws -> [String: Any] {
-        let named = params["path"] != nil || params["bundleId"] != nil
+        let named = !((params["path"] as? String) ?? "").isEmpty
+            || !((params["bundleId"] as? String) ?? "").isEmpty
         let target = (params["target"] as? String) ?? (named ? "window" : "screen")
         let png: Data
         switch target {
@@ -612,7 +623,7 @@ final class ControlKitRPCServer {
             default: throw RunnerError.invalidParameter("modifiers")
             }
         }
-        application(params).typeKey(key, modifierFlags: flags)
+        try runningApplication(params).typeKey(key, modifierFlags: flags)
     }
 
     private static let namedKeys: [String: XCUIKeyboardKey] = [
@@ -653,7 +664,7 @@ final class ControlKitRPCServer {
             let frame = window.frame
             let grab = window
                 .coordinate(withNormalizedOffset: .zero)
-                .withOffset(CGVector(dx: min(frame.width / 2, 160), dy: 8))
+                .withOffset(CGVector(dx: min(max(frame.width / 2, 100), 160), dy: 8))
             grab.press(forDuration: 0.2, thenDragTo: grab.withOffset(CGVector(
                 dx: x - frame.origin.x,
                 dy: y - frame.origin.y
