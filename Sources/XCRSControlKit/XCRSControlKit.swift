@@ -248,9 +248,13 @@ public enum XCRSControlKitAccessibilityParser {
         return ParsedNode(
             node: XCRSControlKitAccessibilityNode(
                 type: type,
-                label: quotedAttribute("label", in: content),
+                // macOS reports a control's visible text as `title` (buttons,
+                // links, menu items) and rarely sets `label`, so title stands in.
+                label: quotedAttribute("label", in: content)
+                    ?? quotedAttribute("title", in: content),
                 name: identifier,
-                value: quotedAttribute("value", in: content),
+                value: quotedAttribute("value", in: content)
+                    ?? unquotedValue(in: content),
                 placeholderValue: quotedAttribute("placeholderValue", in: content),
                 rawIdentifier: identifier,
                 rect: rect,
@@ -344,6 +348,53 @@ public enum XCRSControlKitAccessibilityParser {
         }
 
         return nil
+    }
+
+    /// macOS prints a static text's value without quotes, as the last attribute:
+    /// `StaticText, 0x1, {{0.0, 0.0}, {10.0, 10.0}}, value: No file selected`.
+    /// It runs to the end of the line, less any trailing standalone flags.
+    private static func unquotedValue(in line: String) -> String? {
+        // Find the separator outside any quoted attribute, so a `, value: ` that
+        // sits inside a quoted `title`/`label`/`placeholderValue` is not mistaken
+        // for the real value attribute.
+        let separator = ", value: "
+        var index = line.startIndex
+        var quoted = false
+        var valueStart: String.Index?
+        while index < line.endIndex {
+            let character = line[index]
+            if character == "'" {
+                if quoted {
+                    if isClosingQuote(at: index, in: line) {
+                        quoted = false
+                    }
+                } else {
+                    quoted = true
+                }
+            } else if character == ",", !quoted, line[index...].hasPrefix(separator) {
+                valueStart = line.index(index, offsetBy: separator.count)
+                break
+            }
+            index = line.index(after: index)
+        }
+        guard
+            let valueStart,
+            line[valueStart...].first != "'"
+        else {
+            return nil
+        }
+        var value = String(line[valueStart...])
+        let flags = ["Disabled", "Selected", "Focused"]
+        var stripped = true
+        while stripped {
+            stripped = false
+            for flag in flags where value.hasSuffix(", \(flag)") {
+                value.removeLast(flag.count + 2)
+                stripped = true
+            }
+        }
+        value = value.trimmingCharacters(in: .whitespaces)
+        return value.isEmpty ? nil : value
     }
 
     private static func hasStandaloneAttribute(
